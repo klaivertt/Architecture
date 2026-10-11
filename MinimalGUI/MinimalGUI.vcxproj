@@ -145,6 +145,7 @@
     <ClCompile Include="Load.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Update.cpp" />
+    <ClCompile Include="WidgetsOwner.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h" />
@@ -156,6 +157,7 @@
     <ClInclude Include="Load.h" />
     <ClInclude Include="Slider.h" />
     <ClInclude Include="Update.h" />
+    <ClInclude Include="WidgetsOwner.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

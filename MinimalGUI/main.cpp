@@ -3,6 +3,7 @@
 #include "Load.h"
 #include "Update.h"
 #include "Draw.h";
+#include "WidgetsOwner.h"
 
 //---------------------------------------------------------------------------------
 int main()
@@ -40,19 +41,13 @@ int main()
 				// Todo handle mouse pressed
 				if (event.mouseButton.button == sf::Mouse::Button::Left)
 				{
-					for (size_t i = 0; i < data.widget.size(); i++)
-					{
-						data.widget[i]->Pressed(data.mousePos);
-					}
+					WidgetsOwner::get()->Pressed(data.mousePos);
 				}
 			}
 			break;
 			case sf::Event::MouseButtonReleased:
 			{
-				for (size_t i = 0; i < data.widget.size(); i++)
-				{
-					data.widget[i]->Released();
-				}
+				WidgetsOwner::get()->Released();
 			}
 			break;
 			}
@@ -68,13 +63,7 @@ int main()
 		window.display();
 	}
 
-	for (size_t i = 0; i < data.widget.size(); i++)
-	{
-		Widget* widget = data.widget[i];
-		delete widget;
-	}
-
-	data.widget.clear();
+	WidgetsOwner::get()->Clear();
 
 	return 0;
 }

@@ -3,10 +3,13 @@
 #include "Button.h"
 #include "CheckBox.h"
 #include "Slider.h"
+#include "WidgetsOwner.h"
 
 int Load(GameData& _data)
 {
 	srand((unsigned int)(time(NULL)));
+
+	WidgetsOwner::s_create();
 
 	sf::Font& font = _data.font;
 	if (!font.loadFromFile("arial.ttf"))
@@ -22,7 +25,7 @@ int Load(GameData& _data)
 	float x = SCREEN_S.x - 80.f;
 
 	sf::CircleShape* shape = new sf::CircleShape(20.f);
-	sf::Vector2f shapePos = sf::Vector2f(x, 40.f + 60.f * _data.widget.size());
+	sf::Vector2f shapePos = sf::Vector2f(x, 40.f + 60.f);
 	shape->setPosition(shapePos);
 
 	sf::Text* text = new sf::Text();
@@ -35,11 +38,11 @@ int Load(GameData& _data)
 
 	buttonInit->SetOnClick([&game]() { game.Init(); });
 
-	_data.widget.push_back(buttonInit);
+	WidgetsOwner::get()->Add(buttonInit);
 
 
 	sf::RectangleShape* rshape = new sf::RectangleShape(sf::Vector2f(40.f, 40.f));
-	rshape->setPosition(sf::Vector2f(x, 40.f + 60.f * _data.widget.size()));
+	rshape->setPosition(sf::Vector2f(x, 40.f + 60.f));
 	
 	text = new sf::Text();
 	text->setFont(font);
@@ -51,10 +54,10 @@ int Load(GameData& _data)
 
 	checkBox->SetOnToggle([&game](bool _on) { game.SetPause(_on); });
 
-	_data.widget.push_back(checkBox);
+	WidgetsOwner::get()->Add(checkBox);
 	
 	rshape = new sf::RectangleShape(sf::Vector2f(100.f, 25.f));
-	rshape->setPosition(sf::Vector2f(x-75.f, 40.f + 60.f * _data.widget.size()));
+	rshape->setPosition(sf::Vector2f(x-75.f, 40.f + 60.f));
 	rshape->setFillColor(sf::Color(75,180,120));
 	
 	text = new sf::Text();
@@ -67,7 +70,7 @@ int Load(GameData& _data)
 
 	slider->SetOnReleased([&game](float _percent) { game.SetLifePercent(_percent); });
 
-	_data.widget.push_back(slider);
+	WidgetsOwner::get()->Add(slider);
 
 	return 0;
 }
