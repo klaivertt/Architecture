@@ -52,6 +52,20 @@ const sf::Vector2f& CheckBox::GetSize(void)
     return sf::Vector2f(bound.width, bound.height);
 }
 
+void CheckBox::SetPosition(const sf::Vector2f& _pos)
+{
+    if (m_shape)
+    {
+        float xOffset = m_shape->getOutlineThickness();
+        m_shape->setPosition(_pos.x + xOffset, _pos.y);
+
+        if (m_text) 
+        {
+            CenterTextOnShape(*m_text, *m_shape);
+        }
+    }
+}
+
 void CheckBox::Pressed(const sf::Vector2i& _pos)
 {
     CheckCollision(_pos);

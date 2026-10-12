@@ -2,7 +2,7 @@
 #include "common.h"
 
 #define MARGIN sf::Vector2f(25.f, 25.f)
-
+#define MAX_UPDATE_TIME 3.f 
 class GameLife
 {
 public:
@@ -13,6 +13,7 @@ public:
 	void SetPause(bool _b);
 
 	void SetLifePercent(float _f);
+	void SetUdpdateTime(float _f);
 
 	void Update(float _dt);
 	void Draw(sf::RenderTarget& _render);

@@ -64,6 +64,19 @@ const sf::Vector2f& Button::GetSize(void)
 	return sf::Vector2f(bound.width, bound.height);
 }
 
+void Button::SetPosition(const sf::Vector2f& _pos)
+{
+	if (m_shape)
+	{
+		m_shape->setPosition(_pos);
+
+		if (m_text)
+		{
+			CenterTextOnShape(*m_text, *m_shape);
+		}
+	}
+}
+
 void Button::CheckCollision(const sf::Vector2i& const _pos)
 {
 	sf::FloatRect floatR = this->m_shape->getGlobalBounds();

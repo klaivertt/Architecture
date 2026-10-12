@@ -13,6 +13,8 @@ public:
 	void Pressed(const sf::Vector2i& _pos);
 	void Released();
 	const sf::Vector2f& GetSize(void);
+	void SetPosition(const sf::Vector2f& _pos);
+	void Layout();
 
 	void Add(Widget* _widget);
 	void Delete(Widget* _widget);
@@ -21,4 +23,5 @@ private:
 	sf::Text* text;
 	sf::RectangleShape* rect;
 	sf::Vector2f margin;
+
 };

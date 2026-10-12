@@ -140,6 +140,7 @@
     <ClCompile Include="common.cpp" />
     <ClCompile Include="Draw.cpp" />
     <ClCompile Include="LifeGame.cpp" />
+    <ClCompile Include="Panel.cpp" />
     <ClCompile Include="Slider.cpp" />
     <ClCompile Include="Widget.h" />
     <ClCompile Include="Load.cpp" />
@@ -155,6 +156,7 @@
     <ClInclude Include="GameData.h" />
     <ClInclude Include="LifeGame.h" />
     <ClInclude Include="Load.h" />
+    <ClInclude Include="Panel.h" />
     <ClInclude Include="Slider.h" />
     <ClInclude Include="Update.h" />
     <ClInclude Include="WidgetsOwner.h" />

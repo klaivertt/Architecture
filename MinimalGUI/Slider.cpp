@@ -1,19 +1,22 @@
 #include "Slider.h"
 
-Slider::Slider(sf::Vector2f _bound, float _current, sf::RectangleShape* _shape, sf::Text* _text)
+Slider::Slider(sf::Vector2f _bound, float _current, sf::RectangleShape* _shape, sf::Text* _text, bool _isPercent)
 {
 	this->m_shape = _shape;
 	m_isActive = false;
 	m_isOver = false;
 	m_shape->setOutlineColor(sf::Color(100, 100, 100));
 	m_shape->setOutlineThickness(5.f);
-
 	sf::FloatRect rectBound = m_shape->getLocalBounds();
 
 	m_text = _text;
 
 	m_bound = _bound;
 	m_current = _current;
+	m_isPercent = _isPercent;
+
+	float percent = static_cast<float>(m_current) / m_bound.y;
+	m_inPercent = std::clamp(percent, 0.f, 1.f);
 }
 
 Slider::~Slider()
@@ -35,8 +38,7 @@ void Slider::Update(const sf::Vector2i& _pos)
 	{
 		sf::FloatRect bound = m_shape->getGlobalBounds();
 		float percent = static_cast<float>((_pos.x) - bound.left) / bound.width;
-		m_current = std::clamp(percent, 0.f, 1.f);
-		std::cout << "percent : " << m_current << std::endl;
+		m_inPercent = std::clamp(percent, 0.f, 1.f);
 	}
 
 }
@@ -48,7 +50,7 @@ void Slider::Draw(sf::RenderTarget& _render)
 		sf::Color baseColor = m_shape->getFillColor();
 		sf::FloatRect bound = m_shape->getLocalBounds();
 
-		m_shape->setSize(sf::Vector2f(bound.width * m_current, bound.height));
+		m_shape->setSize(sf::Vector2f(bound.width * m_inPercent, bound.height));
 		m_shape->setFillColor(baseColor);
 		_render.draw(*m_shape);
 
@@ -65,7 +67,18 @@ void Slider::Draw(sf::RenderTarget& _render)
 	if (m_text)
 	{
 		std::string base = m_text->getString();
-		m_text->setString(base + " " + std::to_string(int(m_current * 100.f)));
+		std::string string = "";
+		if (m_isPercent)
+		{
+			string += std::to_string(int(m_inPercent * 100.f));
+		}
+		else
+		{
+
+			string += std::format("{:.2f}", m_current);
+		}
+
+		m_text->setString(base + " " + string);
 		_render.draw(*m_text);
 		m_text->setString(base);
 	}
@@ -90,8 +103,8 @@ void Slider::Released()
 	if (m_isActive && m_onReleased)
 	{
 		//std::cout << "hi" << std::endl;
-		float value = m_bound.x + m_current * (m_bound.y - m_bound.x);
-		m_onReleased(value);
+		m_current = m_bound.x + m_inPercent * (m_bound.y - m_bound.x);
+		m_onReleased(m_current);
 	}
 
 	m_isActive = false;
@@ -101,6 +114,19 @@ const sf::Vector2f& Slider::GetSize(void)
 {
 	sf::FloatRect bound = m_shape ? m_shape->getLocalBounds() : sf::FloatRect();
 	return sf::Vector2f(bound.width, bound.height);
+}
+
+void Slider::SetPosition(const sf::Vector2f& _pos)
+{
+	if (m_shape)
+	{
+		m_shape->setPosition(_pos);
+
+		if (m_text)
+		{
+			CenterTextOnShape(*m_text, *m_shape);
+		}
+	}
 }
 
 void Slider::CheckCollision(const sf::Vector2i& _pos)

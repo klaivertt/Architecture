@@ -11,6 +11,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include <algorithm>
+#include <format>
 
 #define SCREEN_S sf::Vector2i(1920, 1080)
 

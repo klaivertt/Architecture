@@ -70,30 +70,20 @@ const sf::Vector2f& Panel::GetSize(void)
 	return sf::Vector2f(bound.width, bound.height);
 }
 
+void Panel::SetPosition(const sf::Vector2f& _pos)
+{
+	if (rect)
+	{
+		rect->setPosition(_pos);
+	}
+
+	Layout();
+}
+
 void Panel::Add(Widget* _widget)
 {
 	widgets.push_back(_widget);
-
-	sf::Vector2f size = sf::Vector2f(0, 0);
-
-	size = sf::Vector2f(0, 0);
-	for (auto widget : widgets)
-	{
-		sf::Vector2f widgetSize = widget->GetSize();
-		if (size.x == 0)
-		{
-			size.x = widgetSize.x;
-		}
-		else if (size.x < widgetSize.x)
-		{
-			size.x = widgetSize.x;
-		}
-
-		size.y += widgetSize.y + margin.y;
-	}
-
-	rect.setSize(size);
-
+	Layout();
 }
 
 void Panel::Delete(Widget* _widget)
@@ -106,5 +96,37 @@ void Panel::Delete(Widget* _widget)
 			delete *it;
 			break;
 		}
+	}
+}
+
+void Panel::Layout()
+{
+	sf::Vector2f size(0.f, 0.f);
+	sf::Vector2f pos = rect ? rect->getPosition() : sf::Vector2f(0,0);
+	float y = pos.y;
+	pos.x += margin.x;
+	if (text)
+	{
+		text->setPosition(pos.x, pos.y + margin.y / 2);
+		y += text->getLocalBounds().height + margin.y / 0.5f;
+	}
+
+	for (Widget* widget : widgets)
+	{
+		sf::Vector2f widgetSize = widget->GetSize();
+		
+		widget->SetPosition(sf::Vector2f(pos.x + margin.x, y));
+
+		size.y += widgetSize.y + margin.y;
+
+		y += widgetSize.y + margin.y;
+		size.x = std::max(size.x, widgetSize.x);
+	}
+	size.x += margin.x * 3.f;
+	size.y = y - pos.y;          
+
+	if (rect)
+	{
+		rect->setSize(size);
 	}
 }

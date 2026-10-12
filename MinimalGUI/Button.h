@@ -19,9 +19,10 @@ public:
 
 	void SetOnClick(Callback _cb);
 	const sf::Vector2f& GetSize(void);
+	void SetPosition(const sf::Vector2f& _pos);
 protected:
 	sf::Shape* m_shape;
 	Callback m_onClick;
 	sf::Text* m_text;
-	void CheckCollision(const sf::Vector2i& _pos) override;
+	void CheckCollision(const sf::Vector2i& _pos);
 };

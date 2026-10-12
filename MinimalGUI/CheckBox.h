@@ -18,10 +18,11 @@ public:
 
 	void SetOnToggle(Callback _cb);
 	const sf::Vector2f& GetSize(void);
+	void SetPosition(const sf::Vector2f& _pos);
 protected :
 	sf::Shape* m_shape;
 	Callback m_onToggle;
 	bool m_isPressed;
 	sf::Text* m_text;
-	virtual void CheckCollision(const sf::Vector2i& _pos) override;
+	virtual void CheckCollision(const sf::Vector2i& _pos);
 };

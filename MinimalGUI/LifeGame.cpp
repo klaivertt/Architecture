@@ -52,6 +52,11 @@ void GameLife::SetLifePercent(float _f)
 	//std::cout << "Life percent : " << lifePercent << std::endl;
 }
 
+void GameLife::SetUdpdateTime(float _f)
+{
+	updateTime = std::clamp(_f, 0.01f, MAX_UPDATE_TIME);
+}
+
 void GameLife::Update(float _dt)
 {
 	//std::cout << "pause : " << pause << std::endl;
