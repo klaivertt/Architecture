@@ -16,6 +16,7 @@ public:
 	void Pressed(const sf::Vector2i& _pos) override;
 	void SetOnReleased(Callback _cb);
 	void Released() override;
+	const sf::Vector2f& GetSize(void);
 private:
 	sf::Vector2f m_bound;
 	float m_current;

@@ -58,6 +58,12 @@ void Button::SetOnClick(Callback _cb)
 	m_onClick = std::move(_cb);
 }
 
+const sf::Vector2f& Button::GetSize(void)
+{
+	sf::FloatRect bound = m_shape ? m_shape->getLocalBounds() : sf::FloatRect();
+	return sf::Vector2f(bound.width, bound.height);
+}
+
 void Button::CheckCollision(const sf::Vector2i& const _pos)
 {
 	sf::FloatRect floatR = this->m_shape->getGlobalBounds();

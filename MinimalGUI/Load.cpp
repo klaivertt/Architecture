@@ -63,9 +63,10 @@ int Load(GameData& _data)
 	text = new sf::Text();
 	text->setFont(font);
 	text->setCharacterSize(16);
-	text->setString("Life Rate :");
-
+	text->setString("Life Rate : 00");
 	CenterTextOnShape(*text, *rshape);
+	text->setString("Life Rate : ");
+
 	Slider* slider = new Slider(sf::Vector2f(0.f,1.f), 0.5f, rshape, text);
 
 	slider->SetOnReleased([&game](float _percent) { game.SetLifePercent(_percent); });

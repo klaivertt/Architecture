@@ -82,7 +82,7 @@ void Slider::Pressed(const sf::Vector2i& _pos)
 
 void Slider::SetOnReleased(Callback _cb)
 {
-	m_onReleased = _cb;
+	m_onReleased = std::move(_cb);
 }
 
 void Slider::Released()
@@ -95,6 +95,12 @@ void Slider::Released()
 	}
 
 	m_isActive = false;
+}
+
+const sf::Vector2f& Slider::GetSize(void)
+{
+	sf::FloatRect bound = m_shape ? m_shape->getLocalBounds() : sf::FloatRect();
+	return sf::Vector2f(bound.width, bound.height);
 }
 
 void Slider::CheckCollision(const sf::Vector2i& _pos)

@@ -14,7 +14,7 @@ public:
 
 	virtual void Pressed(const sf::Vector2i& _pos) = 0;
 	virtual void Released() = 0;
-	
+	virtual const sf::Vector2f& GetSize(void) = 0;
 protected:
 	bool m_isActive;
 	bool m_isOver;

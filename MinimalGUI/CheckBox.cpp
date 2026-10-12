@@ -46,6 +46,12 @@ void CheckBox::SetOnToggle(Callback _cb)
     m_onToggle = std::move(_cb);
 }
 
+const sf::Vector2f& CheckBox::GetSize(void)
+{
+    sf::FloatRect bound = m_shape ? m_shape->getLocalBounds() : sf::FloatRect();
+    return sf::Vector2f(bound.width, bound.height);
+}
+
 void CheckBox::Pressed(const sf::Vector2i& _pos)
 {
     CheckCollision(_pos);

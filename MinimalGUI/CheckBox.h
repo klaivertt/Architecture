@@ -17,7 +17,7 @@ public:
 	void Released() override;
 
 	void SetOnToggle(Callback _cb);
-
+	const sf::Vector2f& GetSize(void);
 protected :
 	sf::Shape* m_shape;
 	Callback m_onToggle;
