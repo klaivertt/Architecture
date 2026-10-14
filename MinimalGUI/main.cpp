@@ -39,10 +39,7 @@ int main()
 			case sf::Event::MouseButtonPressed:
 			{
 				// Todo handle mouse pressed
-				if (event.mouseButton.button == sf::Mouse::Button::Left)
-				{
-					WidgetsOwner::get()->Pressed(data.mousePos);
-				}
+				WidgetsOwner::get()->Pressed(event.mouseButton.button, data.mousePos);
 			}
 			break;
 			case sf::Event::MouseButtonReleased:
@@ -61,6 +58,8 @@ int main()
 		Draw(window, data);
 
 		window.display();
+
+		WidgetsOwner::get()->CleanDelete();
 	}
 
 	WidgetsOwner::get()->Clear();

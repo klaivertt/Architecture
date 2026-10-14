@@ -84,12 +84,30 @@ void Slider::Draw(sf::RenderTarget& _render)
 	}
 }
 
-void Slider::Pressed(const sf::Vector2i& _pos)
+void Slider::SetOwner(Widget* _owner)
+{
+	m_owner = _owner;
+}
+
+void Slider::Pressed(const sf::Mouse::Button& _button, const sf::Vector2i& _pos)
 {
 	CheckCollision(_pos);
 	if (m_isOver)
 	{
-		m_isActive = true;
+		if (_button == sf::Mouse::Button::Left)
+		{
+			m_isActive = true;
+
+			std::cout << "left" << std::endl;
+		}
+		else if (_button == sf::Mouse::Button::Right)
+		{
+			if (m_owner)
+			{
+				m_owner->Delete(this);
+			}
+			std::cout << "right" << std::endl;
+		}
 	}
 }
 

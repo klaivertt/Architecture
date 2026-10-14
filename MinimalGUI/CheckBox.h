@@ -13,8 +13,12 @@ public:
 	void Update(const sf::Vector2i& _pos) override;
 	void Draw(sf::RenderTarget& _render) override;
 
-	void Pressed(const sf::Vector2i& _pos) override;
+	void Pressed(const sf::Mouse::Button& _button, const sf::Vector2i& _pos) override;
 	void Released() override;
+
+	void SetOwner(Widget* _owner); 
+	void Delete(Widget* _widget) {}
+	void CleanDelete() {}
 
 	void SetOnToggle(Callback _cb);
 	const sf::Vector2f& GetSize(void);

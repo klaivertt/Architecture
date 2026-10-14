@@ -4,6 +4,7 @@ WidgetsOwner* WidgetsOwner::s_instance = nullptr;
 
 WidgetsOwner::WidgetsOwner()
 {
+	m_owner = nullptr;
 }
 
 WidgetsOwner::~WidgetsOwner()
@@ -31,11 +32,11 @@ void WidgetsOwner::Add(Widget* _widget)
 	widgets.push_back(_widget);
 }
 
-void WidgetsOwner::Pressed(const sf::Vector2i& _pos)
+void WidgetsOwner::Pressed(const sf::Mouse::Button& _button, const sf::Vector2i& _pos)
 {
 	for (auto widget : widgets)
 	{
-		widget->Pressed(_pos);
+		widget->Pressed(_button ,_pos);
 	}
 }
 
@@ -55,4 +56,40 @@ void WidgetsOwner::Clear()
 	}
 
 	widgets.clear();
+}
+
+void WidgetsOwner::Delete(Widget* _widget)
+{
+	if (_widget != nullptr)
+	{
+		deleteQueue.push_back(_widget);
+	}
+}
+
+void WidgetsOwner::CleanDelete()
+{
+	for (auto* widget : widgets)
+	{
+		if (widget != nullptr)
+		{
+			widget->CleanDelete();
+		}
+	}
+
+	for (Widget* widgetToDelete : deleteQueue)
+	{
+		auto it = std::find(
+			widgets.begin(),
+			widgets.end(),
+			widgetToDelete
+		);
+
+		if (it != widgets.end())
+		{
+			delete* it;
+			widgets.erase(it);
+		}
+	}
+
+	deleteQueue.clear();
 }

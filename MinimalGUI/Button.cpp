@@ -35,12 +35,27 @@ void Button::Draw(sf::RenderTarget& _render)
 	}
 }
 
-void Button::Pressed(const sf::Vector2i& _pos)
+void Button::SetOwner(Widget* _owner)
+{
+	m_owner = _owner;
+}
+
+void Button::Pressed(const sf::Mouse::Button& _button, const sf::Vector2i& _pos)
 {
 	CheckCollision(_pos);
 	if (m_isOver)
 	{
-		m_isActive = true;
+		if(_button == sf::Mouse::Button::Left)
+		{
+			m_isActive = true;
+		}
+		else if (_button == sf::Mouse::Button::Right)
+		{
+			if (m_owner)
+			{
+				m_owner->Delete(this);
+			}
+		}
 	}
 }
 

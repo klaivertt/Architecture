@@ -3,7 +3,7 @@
 #include "common.h"
 #include "Widget.h"
 
-class WidgetsOwner
+class WidgetsOwner : public Widget
 {
 public:
 	static void s_create()
@@ -22,15 +22,20 @@ public:
 	void Update(const sf::Vector2i& _pos);
 	void Draw(sf::RenderTarget& _render);
 	void Add(Widget* _widget);
-	void Pressed(const sf::Vector2i& _pos);
+	void Pressed(const sf::Mouse::Button& _button, const sf::Vector2i& _pos);
 	void Released();
 	void Clear();
+	void Delete(Widget* _widget);
+	void CleanDelete();
+
+	const sf::Vector2f& GetSize(void) { return  sf::Vector2f(); }
+	void SetOwner(Widget* _owner){}
+	void SetPosition(const sf::Vector2f& _pos){}
 private:
 	WidgetsOwner();
 	~WidgetsOwner();
-
 	std::vector<Widget*> widgets;
+	std::vector<Widget*> deleteQueue;
 
 	static WidgetsOwner* s_instance;
-
 };

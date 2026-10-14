@@ -66,12 +66,22 @@ void CheckBox::SetPosition(const sf::Vector2f& _pos)
     }
 }
 
-void CheckBox::Pressed(const sf::Vector2i& _pos)
+void CheckBox::Pressed(const sf::Mouse::Button& _button, const sf::Vector2i& _pos)
 {
     CheckCollision(_pos);
     if (m_isOver)
     {
-      m_isPressed = true;
+        if (_button == sf::Mouse::Button::Left)
+        {
+            m_isPressed = true;
+        }
+        else if (_button == sf::Mouse::Button::Right)
+        {
+            if (m_owner)
+            {
+                m_owner->Delete(this);
+            }
+        }
     }
 }
 
@@ -86,6 +96,11 @@ void CheckBox::Released()
         }
     }
     m_isPressed = false;
+}
+
+void CheckBox::SetOwner(Widget* _owner)
+{
+    m_owner = _owner;
 }
 
 void CheckBox::CheckCollision(const sf::Vector2i& const _pos)

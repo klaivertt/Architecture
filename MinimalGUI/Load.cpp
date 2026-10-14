@@ -45,6 +45,7 @@ int Load(GameData& _data)
 	Button* buttonInit = new Button(shape, text);
 
 	buttonInit->SetOnClick([&game]() { game.Init(); });
+	buttonInit->SetOwner(panel);
 
 	panel->Add(buttonInit);
 
@@ -60,6 +61,7 @@ int Load(GameData& _data)
 	CheckBox* checkBox = new CheckBox(rshape, text);
 
 	checkBox->SetOnToggle([&game](bool _on) { game.SetPause(_on); });
+	checkBox->SetOwner(panel);
 
 	panel->Add(checkBox);
 	
@@ -74,6 +76,7 @@ int Load(GameData& _data)
 	Slider* slider = new Slider(sf::Vector2f(0.f,1.f), 0.5f, rshape, text, true);
 
 	slider->SetOnReleased([&game](float _percent) { game.SetLifePercent(_percent); });
+	slider->SetOwner(panel);
 
 	panel->Add(slider);
 	
@@ -89,8 +92,10 @@ int Load(GameData& _data)
 	slider = new Slider(sf::Vector2f(0.01f, MAX_UPDATE_TIME), 0.5f, rshape, text);
 
 	slider->SetOnReleased([&game](float _percent) { game.SetUdpdateTime(_percent); });
+	slider->SetOwner(panel);
 
 	panel->Add(slider);
+	panel->SetOwner(WidgetsOwner::get());
 
 	WidgetsOwner::get()->Add(panel);
 
