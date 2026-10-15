@@ -14,7 +14,7 @@ public:
 	void Update(const sf::Vector2i& _pos) override;
 	void Draw(sf::RenderTarget& _render) override;
 
-	void SetOwner(Widget* _owner);
+	void SetOwner(Widget* _owner, bool _isManager = false);
 	void Delete(Widget* _widget) {}
 	void CleanDelete() {}
 

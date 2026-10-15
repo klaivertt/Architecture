@@ -18,10 +18,12 @@ public:
 	virtual void CleanDelete() = 0;
 
 	virtual const sf::Vector2f& GetSize(void) = 0;
-	virtual void SetOwner(Widget* _owner) = 0;
+	virtual void SetOwner(Widget* _owner, bool _isManager = false) = 0;
 	virtual void SetPosition(const sf::Vector2f& _pos) = 0;
 protected:
-	bool m_isActive;
-	bool m_isOver;
-	Widget* m_owner;
+	bool m_isActive = false;
+	bool m_isOver = false;;
+	Widget* m_owner = nullptr;
+	bool m_managerOwned = false;
+	sf::Vector2f m_offset = sf::Vector2f(0, 0);
 };

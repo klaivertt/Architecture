@@ -2,16 +2,21 @@
 
 Panel::Panel(sf::RectangleShape* _rect, sf::Vector2f _margin, sf::Text* _text)
 {
-	text = _text;
-	rect = _rect;
-	margin = _margin;
+	m_text = _text;
+	m_shape = _rect;
+	m_margin = _margin;
 }
 
 Panel::~Panel()
 {
-	if (text)
+	if (m_text)
 	{
-		delete text;
+		delete m_text;
+	}
+
+	if (m_shape)
+	{
+		delete m_shape;
 	}
 
 	for (auto widget : widgets)
@@ -28,18 +33,23 @@ void Panel::Update(const sf::Vector2i& _pos)
 	{
 		widget->Update(_pos);
 	}
+
+	if (m_isActive)
+	{
+		SetPosition(sf::Vector2f(_pos) - m_offset);
+	}
 }
 
 void Panel::Draw(sf::RenderTarget& _render)
 {
-	if (rect)
+	if (m_shape)
 	{
-		_render.draw(*rect);
+		_render.draw(*m_shape);
 	}
 
-	if (text)
+	if (m_text)
 	{
-		_render.draw(*text);
+		_render.draw(*m_text);
 	}
 
 	for (auto widget : widgets)
@@ -55,9 +65,19 @@ void Panel::Pressed(const sf::Mouse::Button& _button, const sf::Vector2i& _pos)
 		widget->Pressed(_button, _pos);
 	}
 
-	if (_button == sf::Mouse::Button::Right)
+
+	if (_button == sf::Mouse::Button::Left && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LControl))
 	{
-		if (rect->getGlobalBounds().contains(sf::Vector2f(_pos)))
+		if (m_managerOwned)
+		{
+			m_isActive = true;
+			sf::FloatRect bound = m_shape->getGlobalBounds();
+			m_offset = sf::Vector2f(_pos.x - bound.left, _pos.y - bound.top);
+		}
+	}
+	else if (_button == sf::Mouse::Button::Right)
+	{
+		if (m_shape->getGlobalBounds().contains(sf::Vector2f(_pos)))
 		{
 			if (widgets.size() == 0)
 			{
@@ -68,6 +88,18 @@ void Panel::Pressed(const sf::Mouse::Button& _button, const sf::Vector2i& _pos)
 			}
 		}
 	}
+	
+	if (_button == sf::Mouse::Button::Right && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LControl))
+	{
+		for (auto widget : widgets)
+		{
+			deleteQueue.push_back(widget);
+		}
+		if (m_owner)
+		{
+			m_owner->Delete(this);
+		}
+	}
 }
 
 void Panel::Released()
@@ -76,24 +108,26 @@ void Panel::Released()
 	{
 		widget->Released();
 	}
+	m_isActive = false;
 }
 
-void Panel::SetOwner(Widget* _owner)
+void Panel::SetOwner(Widget* _owner, bool _isManager)
 {
 	m_owner = _owner;
+	m_managerOwned = _isManager;
 }
 
 const sf::Vector2f& Panel::GetSize(void)
 {
-	sf::FloatRect bound = rect ? rect->getLocalBounds() : sf::FloatRect();
+	sf::FloatRect bound = m_shape ? m_shape->getLocalBounds() : sf::FloatRect();
 	return sf::Vector2f(bound.width, bound.height);
 }
 
 void Panel::SetPosition(const sf::Vector2f& _pos)
 {
-	if (rect)
+	if (m_shape)
 	{
-		rect->setPosition(_pos);
+		m_shape->setPosition(_pos);
 	}
 
 	Layout();
@@ -139,37 +173,39 @@ void Panel::CleanDelete()
 	}
 
 	deleteQueue.clear();
+	Layout();
 }
 
 
 void Panel::Layout()
 {
 	sf::Vector2f size(0.f, 0.f);
-	sf::Vector2f pos = rect ? rect->getPosition() : sf::Vector2f(0, 0);
+	sf::Vector2f pos = m_shape ? m_shape->getPosition() : sf::Vector2f(0, 0);
 	float y = pos.y;
-	pos.x += margin.x;
-	if (text)
+	pos.x += m_margin.x;
+	if (m_text)
 	{
-		text->setPosition(pos.x, pos.y + margin.y / 2);
-		y += text->getLocalBounds().height + margin.y / 0.5f;
+		m_text->setPosition(pos.x, pos.y + m_margin.y / 2);
+		y += m_text->getLocalBounds().height + m_margin.y / 0.5f;
+		size.x += m_text->getLocalBounds().width;
 	}
 
 	for (Widget* widget : widgets)
 	{
 		sf::Vector2f widgetSize = widget->GetSize();
 
-		widget->SetPosition(sf::Vector2f(pos.x + margin.x, y));
+		widget->SetPosition(sf::Vector2f(pos.x + m_margin.x, y));
 
-		size.y += widgetSize.y + margin.y;
+		size.y += widgetSize.y + m_margin.y;
 
-		y += widgetSize.y + margin.y;
+		y += widgetSize.y + m_margin.y;
 		size.x = std::max(size.x, widgetSize.x);
 	}
-	size.x += margin.x * 3.f;
+	size.x += m_margin.x * 3.f;
 	size.y = y - pos.y;
 
-	if (rect)
+	if (m_shape)
 	{
-		rect->setSize(size);
+		m_shape->setSize(size);
 	}
 }

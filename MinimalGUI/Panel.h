@@ -13,7 +13,7 @@ public:
 	void Pressed(const sf::Mouse::Button& _button, const sf::Vector2i& _pos);
 	void Released();
 
-	void SetOwner(Widget* _owner);
+	void SetOwner(Widget* _owner, bool _isManager = false);
 
 	const sf::Vector2f& GetSize(void);
 	void SetPosition(const sf::Vector2f& _pos);
@@ -25,8 +25,8 @@ public:
 private:
 	std::vector<Widget*> widgets;
 	std::vector<Widget*> deleteQueue;
-	sf::Text* text;
-	sf::RectangleShape* rect;
-	sf::Vector2f margin;
+	sf::Text* m_text;
+	sf::RectangleShape* m_shape;
+	sf::Vector2f m_margin;
 
 };

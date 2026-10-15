@@ -29,7 +29,7 @@ public:
 	void CleanDelete();
 
 	const sf::Vector2f& GetSize(void) { return  sf::Vector2f(); }
-	void SetOwner(Widget* _owner){}
+	void SetOwner(Widget* _owner, bool _isManager = false){}
 	void SetPosition(const sf::Vector2f& _pos){}
 private:
 	WidgetsOwner();

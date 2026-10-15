@@ -35,9 +35,10 @@ void Button::Draw(sf::RenderTarget& _render)
 	}
 }
 
-void Button::SetOwner(Widget* _owner)
+void Button::SetOwner(Widget* _owner, bool _isManager)
 {
 	m_owner = _owner;
+	m_managerOwned = _isManager;
 }
 
 void Button::Pressed(const sf::Mouse::Button& _button, const sf::Vector2i& _pos)

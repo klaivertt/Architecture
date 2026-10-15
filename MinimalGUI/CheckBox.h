@@ -16,7 +16,7 @@ public:
 	void Pressed(const sf::Mouse::Button& _button, const sf::Vector2i& _pos) override;
 	void Released() override;
 
-	void SetOwner(Widget* _owner); 
+	void SetOwner(Widget* _owner, bool _isManager = false);
 	void Delete(Widget* _widget) {}
 	void CleanDelete() {}
 

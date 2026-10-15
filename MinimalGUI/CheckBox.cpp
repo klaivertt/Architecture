@@ -98,9 +98,10 @@ void CheckBox::Released()
     m_isPressed = false;
 }
 
-void CheckBox::SetOwner(Widget* _owner)
+void CheckBox::SetOwner(Widget* _owner, bool _isManager)
 {
     m_owner = _owner;
+    m_managerOwned = _isManager;
 }
 
 void CheckBox::CheckCollision(const sf::Vector2i& const _pos)

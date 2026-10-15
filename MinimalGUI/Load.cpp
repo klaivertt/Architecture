@@ -95,7 +95,7 @@ int Load(GameData& _data)
 	slider->SetOwner(panel);
 
 	panel->Add(slider);
-	panel->SetOwner(WidgetsOwner::get());
+	panel->SetOwner(WidgetsOwner::get(), true);
 
 	WidgetsOwner::get()->Add(panel);
 

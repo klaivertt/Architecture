@@ -84,9 +84,10 @@ void Slider::Draw(sf::RenderTarget& _render)
 	}
 }
 
-void Slider::SetOwner(Widget* _owner)
+void Slider::SetOwner(Widget* _owner, bool _isManager)
 {
 	m_owner = _owner;
+	m_managerOwned = _isManager;
 }
 
 void Slider::Pressed(const sf::Mouse::Button& _button, const sf::Vector2i& _pos)
