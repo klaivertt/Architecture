@@ -25,8 +25,9 @@ public:
 	const sf::Vector2f& GetSize(void);
 	void SetPosition(const sf::Vector2f& _pos);
 protected:
-	sf::Shape* m_shape;
+	sf::Shape* m_shape = nullptr;
 	Callback m_onClick;
-	sf::Text* m_text;
+	sf::Text* m_text = nullptr;
+	bool m_moved = false;
 	void CheckCollision(const sf::Vector2i& _pos);
 };

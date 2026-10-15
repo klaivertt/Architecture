@@ -27,6 +27,10 @@ void CheckBox::Update(const sf::Vector2i& _pos)
 
     this->m_shape->setFillColor(m_isOver ? fillC + sf::Color(20, 20, 20) : fillC);
 
+    if (m_moved)
+    {
+        SetPosition(sf::Vector2f(_pos) - m_offset);
+    }
     //isActive = false;
 }
 
@@ -80,6 +84,14 @@ void CheckBox::Pressed(const sf::Mouse::Button& _button, const sf::Vector2i& _po
             if (m_owner)
             {
                 m_owner->Delete(this);
+            }
+        }
+
+        if (_button == sf::Mouse::Button::Left && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LControl))
+        {
+            if (m_managerOwned)
+            {
+                m_moved = true;
             }
         }
     }

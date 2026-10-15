@@ -34,11 +34,16 @@ Slider::~Slider()
 
 void Slider::Update(const sf::Vector2i& _pos)
 {
-	if (m_isActive)
+	if (m_isActive && !m_moved)
 	{
 		sf::FloatRect bound = m_shape->getGlobalBounds();
 		float percent = static_cast<float>((_pos.x) - bound.left) / bound.width;
 		m_inPercent = std::clamp(percent, 0.f, 1.f);
+	}
+
+	if (m_moved)
+	{
+		SetPosition(sf::Vector2f(_pos) - m_offset);
 	}
 
 }
@@ -109,6 +114,14 @@ void Slider::Pressed(const sf::Mouse::Button& _button, const sf::Vector2i& _pos)
 			}
 			std::cout << "right" << std::endl;
 		}
+
+		if (_button == sf::Mouse::Button::Left && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LControl))
+		{
+			if (m_managerOwned)
+			{
+				m_moved = true;
+			}
+		}
 	}
 }
 
@@ -125,7 +138,7 @@ void Slider::Released()
 		m_current = m_bound.x + m_inPercent * (m_bound.y - m_bound.x);
 		m_onReleased(m_current);
 	}
-
+	m_moved = false;
 	m_isActive = false;
 }
 

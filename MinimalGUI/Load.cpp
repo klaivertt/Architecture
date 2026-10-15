@@ -96,9 +96,21 @@ int Load(GameData& _data)
 
 	panel->Add(slider);
 	panel->SetOwner(WidgetsOwner::get(), true);
-
 	WidgetsOwner::get()->Add(panel);
 
-	panel->Layout();
+	//update Time
+	rshape = new sf::RectangleShape(sf::Vector2f(160.f, 25.f));
+	rshape->setFillColor(sf::Color(120,100,180));
+	
+	text = new sf::Text();
+	text->setFont(font);
+	text->setCharacterSize(16);
+	text->setString("Update Rate : ");
+
+	slider = new Slider(sf::Vector2f(0.01f, MAX_UPDATE_TIME), 0.5f, rshape, text);
+
+	slider->SetOnReleased([&game](float _percent) { game.SetUdpdateTime(_percent); });
+	slider->SetOwner(WidgetsOwner::get(), true);
+	WidgetsOwner::get()->Add(slider);
 	return 0;
 }

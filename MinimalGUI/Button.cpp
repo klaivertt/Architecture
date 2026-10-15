@@ -23,6 +23,11 @@ void Button::Update(const sf::Vector2i& _pos)
 	sf::Color fillC = m_isActive ? COLOR_G : COLOR_R;
 
 	this->m_shape->setFillColor(m_isOver ? fillC + sf::Color(20, 20, 20) : fillC);
+
+	if (m_moved)
+	{
+		SetPosition(sf::Vector2f(_pos) - m_offset);
+	}
 }
 
 void Button::Draw(sf::RenderTarget& _render)
@@ -55,6 +60,14 @@ void Button::Pressed(const sf::Mouse::Button& _button, const sf::Vector2i& _pos)
 			if (m_owner)
 			{
 				m_owner->Delete(this);
+			}
+		}
+		
+		if (_button == sf::Mouse::Button::Left && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LControl))
+		{
+			if (m_managerOwned)
+			{
+				m_moved = true;
 			}
 		}
 	}

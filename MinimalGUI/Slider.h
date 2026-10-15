@@ -30,6 +30,8 @@ private:
 	bool m_isPercent;
 	Callback m_onReleased;
 
+	bool m_moved = false;
+
 	sf::RectangleShape* m_shape;
 	sf::Text* m_text;
 	void CheckCollision(const sf::Vector2i& _pos);

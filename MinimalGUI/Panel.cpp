@@ -29,9 +29,12 @@ Panel::~Panel()
 
 void Panel::Update(const sf::Vector2i& _pos)
 {
+	if (!m_isActive)
+	{
 	for (auto widget : widgets)
 	{
 		widget->Update(_pos);
+	}
 	}
 
 	if (m_isActive)
@@ -60,19 +63,18 @@ void Panel::Draw(sf::RenderTarget& _render)
 
 void Panel::Pressed(const sf::Mouse::Button& _button, const sf::Vector2i& _pos)
 {
-	for (auto widget : widgets)
-	{
-		widget->Pressed(_button, _pos);
-	}
 
 
 	if (_button == sf::Mouse::Button::Left && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LControl))
 	{
-		if (m_managerOwned)
+		if (m_shape->getGlobalBounds().contains(sf::Vector2f(_pos)))
 		{
-			m_isActive = true;
-			sf::FloatRect bound = m_shape->getGlobalBounds();
-			m_offset = sf::Vector2f(_pos.x - bound.left, _pos.y - bound.top);
+			if (m_managerOwned)
+			{
+				m_isActive = true;
+				sf::FloatRect bound = m_shape->getGlobalBounds();
+				m_offset = sf::Vector2f(_pos.x - bound.left, _pos.y - bound.top);
+			}
 		}
 	}
 	else if (_button == sf::Mouse::Button::Right)
@@ -98,6 +100,13 @@ void Panel::Pressed(const sf::Mouse::Button& _button, const sf::Vector2i& _pos)
 		if (m_owner)
 		{
 			m_owner->Delete(this);
+		}
+	}
+	if (!m_isActive)
+	{
+		for (auto widget : widgets)
+		{
+			widget->Pressed(_button, _pos);
 		}
 	}
 }
