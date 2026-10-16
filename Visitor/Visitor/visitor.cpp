@@ -1,7 +1,7 @@
 #include "visitor.h"
 #include "dictionary.h"
 
-Visitor::Visitor(SystemeBase* _systemeBase)
+PrintVisitor::PrintVisitor(SystemeBase* _systemeBase)
 {
 	if (_systemeBase == nullptr)
 	{
@@ -11,19 +11,19 @@ Visitor::Visitor(SystemeBase* _systemeBase)
 	_systemeBase->Accepte(*this);
 }
 
-Visitor::~Visitor()
+PrintVisitor::~PrintVisitor()
 {
 }
 
-void Visitor::Visit(Files* _files)
+void PrintVisitor::Visit(Files* _files)
 {
-	if(_files)
+	if (_files)
 	{
 		_files->Print(m_depht);
 	}
 }
 
-void Visitor::Visit(Directory* _directory)
+void PrintVisitor::Visit(Directory* _directory)
 {
 	if (_directory)
 	{
@@ -37,4 +37,40 @@ void Visitor::Visit(Directory* _directory)
 		children->Accepte(*this);
 	}
 
+}
+
+ComputeSizeVisitor::ComputeSizeVisitor(SystemeBase* _systemeBase)
+{
+	if (_systemeBase == nullptr)
+	{
+		std::cout << "_sytemeBase is a null pointer";
+	}
+
+	_systemeBase->Accepte(*this);
+	std::cout << "All Files size : " << m_sizeOfFiles << std::endl;
+}
+
+ComputeSizeVisitor::~ComputeSizeVisitor()
+{
+}
+
+void ComputeSizeVisitor::Visit(Files* _files)
+{
+	if (_files)
+	{
+		m_sizeOfFiles += _files->GetSize();
+	}
+}
+
+void ComputeSizeVisitor::Visit(Directory* _directory)
+{
+	if (_directory)
+	{
+		std::vector<SystemeBase*>& childrens = _directory->GetChildren();
+
+		for (auto children : childrens)
+		{
+			children->Accepte(*this);
+		}
+	}
 }

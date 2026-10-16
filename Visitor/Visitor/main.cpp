@@ -11,7 +11,8 @@ int main()
     root->Add(alex);
     alex->Add(poulio);
     alex->Add(password);
-    Visitor v(root);
+    PrintVisitor v(root);
+    ComputeSizeVisitor vS(root);
 
     system("pause");
 
