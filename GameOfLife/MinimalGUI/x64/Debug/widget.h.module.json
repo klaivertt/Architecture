@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "x64\\Debug\\Widget.h.obj",
+            "outputs": [
+                "D:\\SVN\\Eleves\\abosio\\Architecture\\GameOfLife\\MinimalGUI\\x64\\Debug\\vc145.pdb",
+                "x64\\Debug\\",
+                "D:\\SVN\\Eleves\\abosio\\Architecture\\GameOfLife\\MinimalGUI\\x64\\Debug\\Widget.h.ifc"
+            ],
+            "provides": [
+                {
+                    "logical-name": "Widget.h",
+                    "source-path": "d:\\svn\\eleves\\abosio\\architecture\\gameoflife\\minimalgui\\widget.h",
+                    "lookup-method": "absolute"
+                }
+            ],
+            "requires": []
+        }
+    ]
+}

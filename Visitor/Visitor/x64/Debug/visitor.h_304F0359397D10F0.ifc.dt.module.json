@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "x64\\Debug\\visitor.obj",
+            "outputs": [
+                "x64\\Debug\\visitor.h_304F0359397D10F0.ifc.dt.module.json",
+                "x64\\Debug\\visitor.h_304F0359397D10F0.ifc.dt.d.json",
+                "x64\\Debug\\visitor.h.ifc"
+            ],
+            "provides": [
+                {
+                    "logical-name": "D:\\SVN\\Eleves\\abosio\\Architecture\\Visitor\\Visitor\\visitor.h",
+                    "source-path": "d:\\svn\\eleves\\abosio\\architecture\\visitor\\visitor\\visitor.h",
+                    "lookup-method": "absolute"
+                }
+            ],
+            "requires": []
+        }
+    ]
+}

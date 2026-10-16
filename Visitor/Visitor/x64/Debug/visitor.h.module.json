@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "x64\\Debug\\visitor.h.obj",
+            "outputs": [
+                "D:\\SVN\\Eleves\\abosio\\Architecture\\Visitor\\Visitor\\x64\\Debug\\vc145.pdb",
+                "x64\\Debug\\",
+                "D:\\SVN\\Eleves\\abosio\\Architecture\\Visitor\\Visitor\\x64\\Debug\\visitor.h.ifc"
+            ],
+            "provides": [
+                {
+                    "logical-name": "visitor.h",
+                    "source-path": "d:\\svn\\eleves\\abosio\\architecture\\visitor\\visitor\\visitor.h",
+                    "lookup-method": "absolute"
+                }
+            ],
+            "requires": []
+        }
+    ]
+}
