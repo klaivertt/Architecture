@@ -43,64 +43,108 @@ public:
 		};
 	}
 
-	static Helper& get() {
+	static Helper& get()
+	{
 		static Helper instance;
 		return instance;
 	}
 
 	// Pop methods - get and remove a random element
-	const char* popRandomUserName() {
-		if (m_randomUserNames.empty()) return nullptr;
+	const char* popRandomUserName()
+	{
+		if (m_randomUserNames.empty())
+		{
+			return nullptr;
+		}
+
 		int index = rand() % m_randomUserNames.size();
+
 		const char* name = m_randomUserNames[index];
 		m_randomUserNames.erase(m_randomUserNames.begin() + index);
 		return name;
 	}
 
-	const char* popRandomLibraryName() {
-		if (m_randomLibraryNames.empty()) return nullptr;
+	const char* popRandomLibraryName()
+	{
+		if (m_randomLibraryNames.empty())
+		{
+			return nullptr;
+		}
+
 		int index = rand() % m_randomLibraryNames.size();
+
 		const char* name = m_randomLibraryNames[index];
 		m_randomLibraryNames.erase(m_randomLibraryNames.begin() + index);
 		return name;
 	}
 
-	const char* popRandomEbookName() {
-		if (m_randomEbookNames.empty()) return nullptr;
+	const char* popRandomEbookName()
+	{
+		if (m_randomEbookNames.empty()) 
+		{
+			return nullptr;
+		}
+
 		int index = rand() % m_randomEbookNames.size();
+
 		const char* name = m_randomEbookNames[index];
 		m_randomEbookNames.erase(m_randomEbookNames.begin() + index);
 		return name;
 	}
 
-	const char* popRandomMovieName() {
-		if (m_randomMovieNames.empty()) return nullptr;
+	const char* popRandomMovieName()
+	{
+		if (m_randomMovieNames.empty())
+		{
+			return nullptr;
+		}
+
 		int index = rand() % m_randomMovieNames.size();
+
 		const char* name = m_randomMovieNames[index];
 		m_randomMovieNames.erase(m_randomMovieNames.begin() + index);
 		return name;
 	}
 
 	// Push methods - add a name back to the pool
-	void pushUserName(const char* name) {
+	void pushUserName(const char* name) 
+	{
 		m_randomUserNames.push_back(name);
 	}
 
-	void pushLibraryName(const char* name) {
+	void pushLibraryName(const char* name)
+	{
 		m_randomLibraryNames.push_back(name);
 	}
 
-	void pushEbookName(const char* name) {
+	void pushEbookName(const char* name)
+	{
 		m_randomEbookNames.push_back(name);
 	}
 
-	void pushMovieName(const char* name) {
+	void pushMovieName(const char* name)
+	{
 		m_randomMovieNames.push_back(name);
 	}
 
 	// Check if pools are empty
-	bool hasUserNames() const { return !m_randomUserNames.empty(); }
-	bool hasLibraryNames() const { return !m_randomLibraryNames.empty(); }
-	bool hasEbookNames() const { return !m_randomEbookNames.empty(); }
-	bool hasMovieNames() const { return !m_randomMovieNames.empty(); }
+	bool hasUserNames() const 
+	{
+		return !m_randomUserNames.empty(); 
+	}
+
+	bool hasLibraryNames() const 
+	{ 
+		return !m_randomLibraryNames.empty(); 
+	}
+
+	bool hasEbookNames() const 
+	{ 
+		return !m_randomEbookNames.empty();
+	}
+
+	bool hasMovieNames() const 
+	{ 
+		return !m_randomMovieNames.empty();
+	}
 };
