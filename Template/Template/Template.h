@@ -21,13 +21,20 @@ public:
 		{
 		}
 		T m_value1;
-		T m_value2;
+		T2 m_value2;
 	};
+
+	Pair& operator=(const Pair& other)
+	{
+		m_pair.m_value1 = other.m_pair.m_value1;
+		m_pair.m_value2 = other.m_pair.m_value2;
+		return *this;
+	}
 
 	Pair(T _value1, T2 _value2) : m_pair(_value1, _value2)
 	{
 	}
-	
+
 	Pair(M_Pair _pair) : m_pair(_pair)
 	{
 	}
@@ -42,7 +49,7 @@ public:
 	{
 		return m_pair.m_value1;
 	}
-	
+
 	T2& GetSecond()
 	{
 		return m_pair.m_value2;
@@ -62,29 +69,48 @@ public:
 	}
 	~Array()
 	{
-		if (m_array)
-		{
-			delete[] m_array;
-			m_array = nullptr;
-		}
-		
-		m_size = 0;
-
+		delete[] m_array;
+		m_array = nullptr;
 	}
 
-	T& Get()
+	T* Get()
 	{
 		return m_array;
 	}
 
-	int& operator[](size_t _index)
+	const T& operator[](size_t _index)
 	{
+		if (_index >= m_size)
+		{
+			std::cout << "Index : " << _index << "is out ouf bond max size of this array : " << m_size << std::endl;
+			return const T;
+		}
 		return m_array[_index];
 	}
 
-	size_t size()
+	const size_t size()
 	{
 		return m_size;
+	}
+
+	void Resize(size_t _newSize)
+	{
+		if (!m_array)
+		{
+			std::cout << "array is null" << std::endl;
+			return;
+		}
+
+		T* temp = new T[_newSize];
+
+		size_t copySize = std::min(m_size, _newSize);
+
+		std::memcpy(temp, m_array, sizeof(T) * copySize);
+
+		delete[] m_array;
+
+		m_array = temp;
+		m_size = _newSize;
 	}
 
 private:

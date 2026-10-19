@@ -1,7 +1,7 @@
 {
     "Version": "1.2",
     "Data": {
-        "Source": "d:\\svn\\eleves\\abosio\\architecture\\template\\template\\main.cpp",
+        "Source": "c:\\users\\user\\desktop\\cours\\abosio\\architecture\\template\\template\\main.cpp",
         "ProvidedModule": "",
         "Includes": [
             "c:\\program files\\microsoft visual studio\\18\\community\\vc\\tools\\msvc\\14.51.36231\\include\\iostream",
@@ -128,8 +128,8 @@
             "c:\\program files\\microsoft visual studio\\18\\community\\vc\\tools\\msvc\\14.51.36231\\include\\clocale",
             "c:\\program files (x86)\\windows kits\\10\\include\\10.0.26100.0\\ucrt\\locale.h",
             "c:\\program files\\microsoft visual studio\\18\\community\\vc\\tools\\msvc\\14.51.36231\\include\\ostream",
-            "d:\\svn\\eleves\\abosio\\architecture\\template\\template\\template.h",
-            "d:\\svn\\eleves\\abosio\\architecture\\template\\template\\common.h",
+            "c:\\users\\user\\desktop\\cours\\abosio\\architecture\\template\\template\\template.h",
+            "c:\\users\\user\\desktop\\cours\\abosio\\architecture\\template\\template\\common.h",
             "c:\\program files\\microsoft visual studio\\18\\community\\vc\\tools\\msvc\\14.51.36231\\include\\vector",
             "c:\\program files\\microsoft visual studio\\18\\community\\vc\\tools\\msvc\\14.51.36231\\include\\__msvc_bit_utils.hpp",
             "c:\\program files\\microsoft visual studio\\18\\community\\vc\\tools\\msvc\\14.51.36231\\include\\functional",
