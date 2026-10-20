@@ -3,5 +3,5 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="Template/Template.vcxproj" />
+  <Project Path="D:/SVN/Eleves/abosio/Architecture/Template/Template/Template.vcxproj" Id="936530e5-469c-4bba-beb3-cd99ab43b41f" />
 </Solution>

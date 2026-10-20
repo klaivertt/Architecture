@@ -62,15 +62,37 @@ template<typename T>
 class Array
 {
 public:
-	Array(size_t _size)
+	Array() = default;
+
+	explicit Array(size_t _size)
 	{
 		m_array = new T[_size];
 		m_size = _size;
+		m_capacity = _size;
 	}
+
 	~Array()
 	{
 		delete[] m_array;
 		m_array = nullptr;
+	}
+
+	Array(const Array& _other)
+	{
+		m_array = (_other.m_size ? new T[_other.m_size] : nullptr);
+		m_size = _other.m_size;
+		m_capacity = _other.m_capacity;
+		std::copy(_other.m_array, _other.m_array + _other.m_size, m_array);
+	}
+
+	Array(Array&& _other)
+		: m_array(_other.m_array),
+		m_size(_other.m_size),
+		m_capacity(_other.m_capacity)
+	{
+		_other.m_array = nullptr;
+		_other.m_size = 0;
+		_other.m_capacity = 0;
 	}
 
 	T* Get()
@@ -78,13 +100,15 @@ public:
 		return m_array;
 	}
 
-	const T& operator[](size_t _index)
+	T& operator[](size_t _index)
 	{
-		if (_index >= m_size)
-		{
-			std::cout << "Index : " << _index << "is out ouf bond max size of this array : " << m_size << std::endl;
-			return const T;
-		}
+		assert(_index < m_size && "Array: index out of range");
+		return m_array[_index];
+	}
+
+	const T& operator[](size_t _index) const
+	{
+		assert(_index < m_size && "Array: index out of range");
 		return m_array[_index];
 	}
 
@@ -95,25 +119,53 @@ public:
 
 	void Resize(size_t _newSize)
 	{
-		if (!m_array)
+		if (_newSize > m_capacity)
 		{
-			std::cout << "array is null" << std::endl;
-			return;
+			Reserve(_newSize);
 		}
 
-		T* temp = new T[_newSize];
+		for (size_t i = m_size; i < _newSize; ++i)
+		{
+			m_array[i] = T{};
+		}
 
-		size_t copySize = std::min(m_size, _newSize);
-
-		std::memcpy(temp, m_array, sizeof(T) * copySize);
-
-		delete[] m_array;
-
-		m_array = temp;
 		m_size = _newSize;
 	}
 
+	void Reserve(size_t _newCapacity)
+	{
+		if (_newCapacity <= m_capacity)
+		{
+			return;
+		}
+
+		T* newArray = new T[_newCapacity];
+		for (size_t i = 0; i < m_size; ++i)
+		{
+			newArray[i] = std::move(m_array[i]);
+		}
+
+		delete[] m_array;
+		m_array = newArray;
+		m_capacity = _newCapacity;
+	}
+
+	void PushBack(T _add)
+	{
+		if (m_size == m_capacity)
+		{
+			Reserve(m_capacity == 0 ? 1 : m_capacity * 2);
+		}
+
+		m_array[m_size++] = std::move(_add);
+	}
 private:
 	T* m_array = nullptr;
 	size_t m_size = 0;
+	size_t m_capacity = 0;
+
+	void CalculCapacity(void)
+	{
+		m_capacity;
+	}
 };
