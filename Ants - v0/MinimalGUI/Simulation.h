@@ -76,6 +76,11 @@ public:
     unsigned int getFoodQuantity() const { return m_foodQuantity; }
     void setFoodQuantity(unsigned int _v) { m_foodQuantity = _v; }
 
+    void FoodSpotQuantityString(std::string& _string) const
+    {
+        _string = _string + " : " + std::to_string(m_foodSpots.size());
+    }
+
     float getFoodRadiusFactor() const { return m_foodRadiusFactor; }
     void setFoodRadiusFactor(float _v) { m_foodRadiusFactor = _v; }
 

@@ -17,6 +17,7 @@ public:
 	virtual void visit(Slider<unsigned>& _slider) {}
 	virtual void visit(Slider<float>& _slider) {}
 	virtual void visit(Panel& _panel);
+	virtual void visit(Label& _label) {}
 };
 
 //---------------------------------------------------------------------------------
@@ -29,5 +30,6 @@ public:
 	virtual void visit(const Slider<unsigned>& _slider) {}
 	virtual void visit(const Slider<float>& _slider) {}
 	virtual void visit(const Panel& _panel);
+	virtual void visit(const Label& _label) {}
 };
 

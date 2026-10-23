@@ -87,6 +87,11 @@ void DrawVisitor::visit(const Panel& _panel)
 	ConstVisitor::visit(_panel);
 }
 
+void DrawVisitor::visit(const Label& _label)
+{
+	drawText(m_renderTarget, m_font, _label.getLabel(), { _label.getTopLeft().x + 5.f, _label.getTopLeft().y + 5.f }, getTextColor(_label));
+}
+
 //---------------------------------------------------------------------------------
 void DrawVisitor::visit(const Slider<unsigned>& _slider)
 {

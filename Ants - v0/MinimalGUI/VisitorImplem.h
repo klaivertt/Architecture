@@ -37,6 +37,7 @@ public:
 	virtual void visit(const Slider<unsigned>& _slider) override;
 	virtual void visit(const Slider<float>& _slider) override;
 	virtual void visit(const Panel& _panel) override;
+	virtual void visit(const Label& _panel) override;
 
 	bool isWidgetHovered(const Widget& _widget) const { return (&_widget == m_hovered); }
 

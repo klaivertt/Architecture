@@ -55,6 +55,10 @@ int main()
                                                         [&](unsigned _value){ simulation.setRandomWiggleStrength(_value); } );
 	uiPanel->pushChild(*randomWiddlgeStrength);
 
+    Label* label = new Label("Food Count : ", [&](){});
+
+    uiPanel->pushChild(*label);
+
     WidgetManager::s_create();
     WidgetManager::get()->pushWidget(*uiPanel);
     WidgetManager::get()->setup();

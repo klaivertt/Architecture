@@ -6,6 +6,7 @@
 class ConstVisitor;
 class Visitor;
 
+
 //---------------------------------------------------------------------------------
 class Widget
 {
@@ -145,3 +146,29 @@ void Slider<T>::handleMouseDragEvent(const sf::Vector2f& _mousePosition) const
 	value = std::clamp(value, m_minValue, m_maxValue);
 	m_setter(value);
 }
+
+class Label : public Widget
+{
+public:
+	using Callback = std::function<void(std::string&)>;
+
+	Label(const char* _label, Callback _callBack)
+		: Widget(_label, {0,0})
+	{
+	}
+
+	~Label()
+	{
+	}
+
+	virtual void accept(Visitor& _visitor) override;
+	virtual void accept(ConstVisitor& _visitor) const override;
+
+	void AssignedCalback(Callback _callBack)
+	{
+		m_callback = _callBack;
+	}
+
+private:
+	Callback m_callback;
+};

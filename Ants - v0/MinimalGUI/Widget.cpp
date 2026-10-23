@@ -60,3 +60,13 @@ void Panel::accept(ConstVisitor& _visitor) const
 {
     _visitor.visit(*this);
 }
+
+void Label::accept(Visitor& _visitor)
+{
+    _visitor.visit(*this);
+}
+
+void Label::accept(ConstVisitor& _visitor) const
+{
+    _visitor.visit(*this);
+}
