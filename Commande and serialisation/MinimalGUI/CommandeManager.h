@@ -2,23 +2,23 @@
 
 #include "common.h"
 
-class Commande;
-class CommandeManager
+class Command;
+class CommandManager
 {
 public:
-	void s_create();
-	const CommandeManager* get() { return s_instance; }
+	static void s_create();
+	static CommandManager* const get() { return s_instance; }
 
-	void Execute(Commande* _commande);
-	void Undo(Commande* _commande);
+	void Execute(Command* _commande);
+	void Undo();
 	void Redo();
 private:
-	CommandeManager();
-	~CommandeManager();
+	CommandManager();
+	~CommandManager();
 
 	void ClearRedo();
 
-	static CommandeManager* s_instance;
-	std::vector<Commande*> m_commandes;
-	std::vector<Commande*> m_undoCommandes;
+	static CommandManager* s_instance;
+	std::vector<Command*> m_commandes;
+	std::vector<Command*> m_undoCommandes;
 };

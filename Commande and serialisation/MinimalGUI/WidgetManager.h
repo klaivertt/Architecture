@@ -2,6 +2,8 @@
 #include "common.h"
 #include "Widget.h"
 
+class Command;
+
 //---------------------------------------------------------------------------------
 class WidgetManager
 {
@@ -25,6 +27,8 @@ private:
 
 	Widget* m_hovered{ nullptr };
 	Widget* m_pressed{ nullptr };
+
+	Command* m_currentCommand{ nullptr };
 
 	enum class DrawMode
 	{

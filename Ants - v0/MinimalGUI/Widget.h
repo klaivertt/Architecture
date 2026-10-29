@@ -43,8 +43,8 @@ protected:
 class Button : public Widget
 {
 public:
-	Button(	const char* _label, const sf::Vector2f& _size,
-			std::function<void()> _onPressed)
+	Button(const char* _label, const sf::Vector2f& _size,
+		std::function<void()> _onPressed)
 		: Widget(_label, _size), m_onPressed(_onPressed)
 	{
 	}
@@ -152,8 +152,8 @@ class Label : public Widget
 public:
 	using Callback = std::function<void(std::string&)>;
 
-	Label(const char* _label, Callback _callBack)
-		: Widget(_label, {0,0})
+	Label(const char* _label, const sf::Vector2f& _size, Callback _callBack)
+		: Widget(_label, _size), m_callback(_callBack)
 	{
 	}
 
@@ -164,9 +164,12 @@ public:
 	virtual void accept(Visitor& _visitor) override;
 	virtual void accept(ConstVisitor& _visitor) const override;
 
-	void AssignedCalback(Callback _callBack)
+	void FormatStringValue(std::string& _valueString) const
 	{
-		m_callback = _callBack;
+		if (m_callback)
+		{
+			m_callback(_valueString);
+		}
 	}
 
 private:

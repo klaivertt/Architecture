@@ -3,23 +3,43 @@
 #include "common.h"
 #include "Widget.h"
 
-class Commande
+class Command
 {
 public:
-	~Commande() {}
+	virtual ~Command() = default;
 
 	virtual void execute() = 0;
-	virtual void undo() {};
+	virtual void undo() = 0;
+	virtual void redo() = 0;
 
 };
+
 template<typename T>
-class SliderCommande : public Commande
+class SliderCommand : public Command
 {
 public:
-	SliderCommande(Slider<T>& _slider) : slider(_slider)
+	SliderCommand(Slider<T>& _slider) : slider(_slider)
 	{
-
+		m_old = slider.getValue();
 	}
+
+	virtual void execute() override
+	{
+		m_new = slider.getValue();
+	}
+
+	virtual void undo() override
+	{
+		slider.SetValue(m_old);
+	}
+
+	virtual void redo() override
+	{
+		slider.SetValue(m_new);
+	}
+
 private:
 	Slider<T>& slider;
+	T m_old;
+	T m_new;
 };

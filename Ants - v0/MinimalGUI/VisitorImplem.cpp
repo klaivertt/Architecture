@@ -89,7 +89,14 @@ void DrawVisitor::visit(const Panel& _panel)
 
 void DrawVisitor::visit(const Label& _label)
 {
-	drawText(m_renderTarget, m_font, _label.getLabel(), { _label.getTopLeft().x + 5.f, _label.getTopLeft().y + 5.f }, getTextColor(_label));
+	std::string valueString;
+	_label.FormatStringValue(valueString);
+	const std::string text = std::format("{}: {}", _label.getLabel(), valueString.c_str());
+	//std::cout << valueString << std::endl;
+
+	sf::RectangleShape r = createRectangleShape(_label);
+	m_renderTarget.draw(r);
+	drawText(m_renderTarget, m_font, text.c_str(), { _label.getTopLeft().x + 5.f, _label.getTopLeft().y }, getTextColor(_label));
 }
 
 //---------------------------------------------------------------------------------

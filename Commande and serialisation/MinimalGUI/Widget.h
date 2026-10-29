@@ -83,6 +83,7 @@ public:
 	virtual void handleMouseDragEvent(const sf::Vector2f& _mouseDelta) const override;
 
 	T getValue() const { return m_getter(); }
+	void SetValue(T _newValue) { m_setter(_newValue); }
 	T getMaxValue() const { return m_maxValue; }
 	T getMinValue() const { return m_minValue; }
 
@@ -144,6 +145,7 @@ public:
 	std::vector<Widget*>& getChildren() { return m_children; }
 	virtual void setup() override;
 
+
 private:
 	std::vector<Widget*> m_children;
 };
@@ -158,10 +160,6 @@ template<typename T>
 void Slider<T>::handleMousePressedEvent(const sf::Vector2f& _mousePosition) const
 {
 	handleMouseDragEvent(_mousePosition);
-
-	if (_event.type == sf::Event::MouseButtonReleased)
-	{
-	}
 }
 
 //---------------------------------------------------------------------------------

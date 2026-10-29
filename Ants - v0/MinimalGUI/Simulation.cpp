@@ -175,6 +175,16 @@ void Simulation::update(float _dt)
     } while (_dt > 0.f);
 }
 
+unsigned int Simulation::computeTotalFoodQty(void)
+{
+    unsigned qty = 0u;
+    for (const FoodSpot& spot : m_foodSpots)
+    {
+        qty += spot.m_quantity;
+    }
+    return qty;
+}
+
 //--------------------------------------------------------------------------------------
 void Simulation::spawnAgent()
 {

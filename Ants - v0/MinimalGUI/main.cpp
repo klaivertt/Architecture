@@ -2,7 +2,8 @@
 #include "Simulation.h"
 #include "Shape.h"
 #include "Widget.h"
-#include "WidgetManager.h"
+#include "WidgetManager.h
+#include ""
 
 const int WINDOW_WIDTH = 1240;
 const int WINDOW_HEIGHT = 720;
@@ -55,7 +56,8 @@ int main()
                                                         [&](unsigned _value){ simulation.setRandomWiggleStrength(_value); } );
 	uiPanel->pushChild(*randomWiddlgeStrength);
 
-    Label* label = new Label("Food Count : ", [&](){});
+    Label* label = new Label("Food Count", sf::Vector2f(20.f, 30.f),
+        [&](std::string& _valueString) { _valueString = std::format("{}", simulation.computeTotalFoodQty()); });
 
     uiPanel->pushChild(*label);
 

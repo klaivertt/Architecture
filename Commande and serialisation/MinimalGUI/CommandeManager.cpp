@@ -1,17 +1,17 @@
 #include "CommandeManager.h"
 #include "Commande.h"
 
-CommandeManager* CommandeManager::s_instance = nullptr;
+CommandManager* CommandManager::s_instance = nullptr;
 
-void CommandeManager::s_create()
+void CommandManager::s_create()
 {
 	if (s_instance == nullptr)
 	{
-		s_instance = new CommandeManager;
+		s_instance = new CommandManager;
 	}
 }
 
-void CommandeManager::Execute(Commande* _commande)
+void CommandManager::Execute(Command* _commande)
 {
 	if (_commande == nullptr)
 	{
@@ -19,41 +19,45 @@ void CommandeManager::Execute(Commande* _commande)
 	}
 
 	_commande->execute();
-	m_commandes.push_back(_commande);
+	m_commandes.push_back(std::move(_commande));
 	ClearRedo();
 }
 
-void CommandeManager::Undo(Commande* _commande)
+void CommandManager::Undo()
 {
-	if (!m_commandes.empty())
+	if (m_commandes.empty())
 	{
-		Commande* last = m_commandes.back();
-		last->execute();
-		m_commandes.pop_back();
-		m_undoCommandes.push_back(last);
+		return;
 	}
+
+	Command* last = m_commandes.back();
+	last->undo();
+	m_undoCommandes.push_back(last);
+	m_commandes.pop_back();
 }
 
-void CommandeManager::Redo()
+void CommandManager::Redo()
 {
-	if (!m_commandes.empty())
+	if (m_undoCommandes.empty())
 	{
-		Commande* last = m_undoCommandes.back();
-		last->execute();
-		m_commandes.push_back(last);
-		m_undoCommandes.pop_back();
+		return;
 	}
+
+	Command* last = m_undoCommandes.back();
+	last->redo();
+	m_commandes.push_back(last);
+	m_undoCommandes.pop_back();
 }
 
-CommandeManager::CommandeManager()
+CommandManager::CommandManager()
 {
 }
 
-CommandeManager::~CommandeManager()
+CommandManager::~CommandManager()
 {
 }
 
-void CommandeManager::ClearRedo()
+void CommandManager::ClearRedo()
 {
 	for (auto undo : m_undoCommandes)
 	{
