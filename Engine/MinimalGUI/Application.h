@@ -1,5 +1,6 @@
 #pragma once
 #include "Engine.h"
+#include "Editor.h"
 
 namespace CJ
 {
@@ -19,7 +20,7 @@ namespace CJ
 		sf::RenderWindow*	m_window{ nullptr };
 		sf::Clock			m_clock;
 		bool				m_editorEnabled{ true };
-		CJ::Editor*			m_editor{ nullptr };	
+		std::unique_ptr<CJ::Editor>	m_editor;	
 		CJ::Engine			m_engine;
 	};
 }
