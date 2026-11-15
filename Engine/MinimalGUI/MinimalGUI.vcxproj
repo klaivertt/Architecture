@@ -201,6 +201,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="AssetsManager.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="Engine.cpp" />
@@ -209,6 +210,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="AssetsManager.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Editor.h" />

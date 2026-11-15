@@ -9,6 +9,7 @@ namespace CJ
 	class Editor
 	{
 	public:
+		Editor(Engine& _engine, const std::vector<Entity*>& _entities);
 		bool Initialize();
 
 		// TODO create an Editor class that mirrors the Engine class: 
@@ -18,7 +19,9 @@ namespace CJ
 		void Update(const float _deltaTime);
 		void Render(sf::RenderTarget& _rt);
 	private:
-		std::vector<Entity*> m_entities;
+		const std::vector<Entity*>& m_entities;
+		sf::Text m_text;
+		Engine& m_engine;
 	};
 }
 

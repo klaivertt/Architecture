@@ -41,6 +41,11 @@ namespace CJ
 		virtual void Update(const float _deltaTime)override;
 		virtual void Render(sf::RenderTarget& _rt)override;
 
+		sf::Sprite& GetSprite(void)
+		{
+			return m_sprite;
+		}
+
 		virtual const char* GetName() override { return "GraphicComponent"; }
 
 	private:

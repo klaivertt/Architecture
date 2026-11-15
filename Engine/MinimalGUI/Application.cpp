@@ -1,5 +1,6 @@
 #include "Application.h"
 #include "Editor.h"
+#include "AssetsManager.h"
 
 using namespace CJ;
 
@@ -15,6 +16,10 @@ bool Application::Initialize(const char* _title, const sf::VideoMode& _mode, uns
 {
 	m_window = new sf::RenderWindow(_mode, _title);
 	m_window->setFramerateLimit(_framerateLimite);
+	std::srand(static_cast<unsigned int>(std::time(nullptr)));
+	AssetManager::s_create();
+
+	m_editor = std::make_unique<Editor>(m_engine, m_engine.GetEntities());
 
 	if (!m_engine.Initialize())
 	{
@@ -31,7 +36,6 @@ bool Application::Initialize(const char* _title, const sf::VideoMode& _mode, uns
 
 void Application::Run()
 {
-	std::srand(static_cast<unsigned int>(std::time(nullptr)));
 
 	while (m_window->isOpen())
 	{
@@ -60,7 +64,7 @@ void Application::Run()
 		m_window->clear(sf::Color::Black);
 		m_engine.Render(*m_window);
 		
-		if (!m_editor)
+		if (m_editor && m_editorEnabled)
 		{
 			m_editor->Render(*m_window);
 		}

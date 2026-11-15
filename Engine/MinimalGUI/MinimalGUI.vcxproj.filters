@@ -45,6 +45,9 @@
     <ClCompile Include="Component.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="AssetsManager.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -64,6 +67,9 @@
     </ClInclude>
     <ClInclude Include="Component.h">
       <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetsManager.h">
+      <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
