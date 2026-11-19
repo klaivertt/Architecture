@@ -19,7 +19,7 @@ bool Application::Initialize(const char* _title, const sf::VideoMode& _mode, uns
 	std::srand(static_cast<unsigned int>(std::time(nullptr)));
 	AssetManager::s_create();
 
-	m_editor = std::make_unique<Editor>(m_engine, m_engine.GetEntities());
+	m_editor = std::make_unique<Editor>(m_engine, m_engine.GetEntities(), m_pause);
 
 	if (!m_engine.Initialize())
 	{
@@ -46,19 +46,26 @@ void Application::Run()
 		// In the lines below, call the Editor's functions so that
 		// everything works as intented.
 
-		m_engine.Inputs(inputs);
+		if(!m_pause)
+		{
+			m_engine.Inputs(inputs);
+		}
 		
-		if (!m_editor)
+		if (m_editor && m_editorEnabled)
 		{
 			m_editor->Inputs(inputs);
 		}
 
 		const float deltaTime = m_clock.restart().asSeconds();
-		m_engine.Update(deltaTime);
-		
-		if (!m_editor)
+		if (!m_pause)
 		{
-			m_editor->Update(deltaTime);
+			m_engine.Update(deltaTime);
+		}
+
+		if (m_editor && m_editorEnabled)
+		{
+			sf::Vector2i mousePos = sf::Mouse::getPosition(*m_window);
+			m_editor->Update(deltaTime, mousePos);
 		}
 
 		m_window->clear(sf::Color::Black);
@@ -103,6 +110,13 @@ std::vector<sf::Event> Application::ProcessEvents()
 					m_editor)
 				{
 					m_editorEnabled = !m_editorEnabled;
+					m_pause = m_editorEnabled;
+				}
+				if (event.type == sf::Event::KeyPressed &&
+					event.key.code == sf::Keyboard::Space &&
+					m_editor)
+				{
+					m_pause = !m_pause;
 				}
 				else
 				{
