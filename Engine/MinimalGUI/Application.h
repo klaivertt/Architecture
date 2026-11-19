@@ -20,6 +20,7 @@ namespace CJ
 		sf::RenderWindow*	m_window{ nullptr };
 		sf::Clock			m_clock;
 		bool				m_editorEnabled{ true };
+		bool				m_pause{ true };
 		std::unique_ptr<Editor>	m_editor;	
 		CJ::Engine			m_engine;
 	};
