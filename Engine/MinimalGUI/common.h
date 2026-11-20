@@ -16,6 +16,9 @@
 #include "SFML/Network.hpp"
 #include "SFML/OpenGL.hpp"
 
+#include "json.hpp"
+using json = nlohmann::json;
+
 #define SINGLETON_PUBLIC_DECLARATION( _class )	static void s_create() { if (!s_instance) s_instance = new _class(); }					\
 												static void s_destroy() { if (s_instance) delete s_instance; s_instance = nullptr; }	\
 												static _class* get() { return s_instance; }

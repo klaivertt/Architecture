@@ -1,49 +1,28 @@
 #include "Component.h"
+#include "Entity.h"
 
 using namespace CJ;
 
-GraphicComponent::GraphicComponent(const char* _textureFile, sf::Vector2f& _position, const sf::IntRect& _area) : m_pos(_position)
+void GraphicComponent::Initialize()
 {
-	if (!m_texture.loadFromFile(_textureFile))
-	{
-		return;
-	}
-
-	m_sprite.setPosition(_position);
-	m_sprite.setTexture(m_texture);
-	m_sprite.setTextureRect(_area);
-
-	m_nbFrame = 0;
-}
-
-GraphicComponent::GraphicComponent(sf::Vector2f& _position, AnimParametter& _parametter) : m_pos(_position)
-{
-	if (!m_texture.loadFromFile(_parametter.path))
+	if (!m_texture.loadFromFile(m_anim.path))
 	{
 		return;
 	}
 
 	m_sprite.setTexture(m_texture);
-	m_sprite.setPosition(_position);
+	//m_sprite.setPosition(_position);
 
 	sf::Vector2u textureSize = m_texture.getSize();
 
-	sf::Vector2i divider = _parametter.frameDivider;
+	sf::Vector2i divider = m_anim.frameDivider;
 
 	m_frameSize = sf::Vector2i(textureSize.x / divider.x, textureSize.y / divider.y);
 
-	m_startFrame = _parametter.startFrame;
-	m_frameTime = _parametter.frameTime;
-	m_nbFrame = _parametter.nbFrame;
-	m_isLoop = _parametter.isLoop;
-
-	sf::IntRect rect = sf::IntRect(m_startFrame.x + (m_frameSize.x * m_currentFrame), m_startFrame.y, m_frameSize.x, m_frameSize.y);
+	sf::IntRect rect = sf::IntRect(m_anim.startFrame.x + (m_frameSize.x * m_currentFrame), m_anim.startFrame.y, m_frameSize.x, m_frameSize.y);
 
 	m_sprite.setTextureRect(rect);
-}
 
-GraphicComponent::GraphicComponent(sf::Vector2f& _position) : m_pos(_position)
-{
 }
 
 void GraphicComponent::Inputs(const std::vector<sf::Event>& _events)
@@ -52,20 +31,20 @@ void GraphicComponent::Inputs(const std::vector<sf::Event>& _events)
 
 void GraphicComponent::Update(const float _deltaTime)
 {
-	if (m_nbFrame > 0)
+	if (m_anim.nbFrame > 0)
 	{
 
 		m_animationTimer += _deltaTime;
 
-		if (m_animationTimer > m_frameTime)
+		if (m_animationTimer > m_anim.frameTime)
 		{
-			m_animationTimer -= m_frameTime;
-			if (m_isLoop)
+			m_animationTimer -= m_anim.frameTime;
+			if (m_anim.isLoop)
 			{
 				m_isFinished = true;
-				m_currentFrame = (m_currentFrame + 1) % m_nbFrame;
+				m_currentFrame = (m_currentFrame + 1) % m_anim.nbFrame;
 			}
-			else if (m_currentFrame < m_nbFrame - 1)
+			else if (m_currentFrame < m_anim.nbFrame - 1)
 			{
 				m_currentFrame++;
 				m_isFinished = false;
@@ -75,7 +54,7 @@ void GraphicComponent::Update(const float _deltaTime)
 				m_isFinished = true;
 			}
 
-			sf::IntRect rect = sf::IntRect(m_startFrame.x + (m_frameSize.x * m_currentFrame), m_startFrame.y, m_frameSize.x, m_frameSize.y);
+			sf::IntRect rect = sf::IntRect(m_anim.startFrame.x + (m_frameSize.x * m_currentFrame), m_anim.startFrame.y, m_frameSize.x, m_frameSize.y);
 
 			m_sprite.setTextureRect(rect);
 		}
@@ -84,7 +63,10 @@ void GraphicComponent::Update(const float _deltaTime)
 
 void GraphicComponent::Render(sf::RenderTarget& _rt)
 {
-	m_sprite.setPosition(m_pos);
+	//if (m_pos)
+	//{
+	//	m_sprite.setPosition(*m_pos);
+	//}
 	_rt.draw(m_sprite);
 }
 
@@ -101,23 +83,54 @@ void GraphicComponent::SetAnim(AnimParametter& _anim)
 
 	m_frameSize = sf::Vector2i(textureSize.x / divider.x, textureSize.y / divider.y);
 
-	m_startFrame = _anim.startFrame;
-	m_frameTime = _anim.frameTime;
-	m_nbFrame = _anim.nbFrame;
-	m_isLoop = _anim.isLoop;
+	m_anim.startFrame = _anim.startFrame;
+	m_anim.frameTime = _anim.frameTime;
+	m_anim.nbFrame = _anim.nbFrame;
+	m_anim.isLoop = _anim.isLoop;
 	m_currentFrame = 0;
 	m_animationTimer = 0.f;
 	m_isFinished = false;
 
-	sf::IntRect rect = sf::IntRect(m_startFrame.x + (m_frameSize.x * m_currentFrame), m_startFrame.y, m_frameSize.x, m_frameSize.y);
+	sf::IntRect rect = sf::IntRect(m_anim.startFrame.x + (m_frameSize.x * m_currentFrame), m_anim.startFrame.y, m_frameSize.x, m_frameSize.y);
 
 	m_sprite.setTexture(m_texture);
 	m_sprite.setTextureRect(rect);
 }
 
-TransformComponent::TransformComponent(sf::Vector2f _startPos)
+json GraphicComponent::Serialize() const
 {
-	m_pos = _startPos;
+	json cJson;
+	cJson["position"]["x"] = m_sprite.getPosition().x;
+	cJson["position"]["y"] = m_sprite.getPosition().y;
+
+	cJson["TextureFiles"] = m_anim.path;
+	cJson["FrameCount"] = m_anim.nbFrame;
+	cJson["FrameDivider"]["w"] = m_anim.frameDivider.x;
+	cJson["FrameDivider"]["h"] = m_anim.frameDivider.y;
+
+
+	cJson["StartFrame"]["w"] = m_anim.startFrame.x;
+	cJson["StartFrame"]["h"] = m_anim.startFrame.y;
+
+	return cJson;
+}
+
+void GraphicComponent::Deserialize(const json& _json)
+{
+	const sf::Vector2f position = { _json["position"]["x"], _json["position"]["y"] };
+	m_sprite.setPosition(position);
+
+	m_anim.path= _json["spriteSheetFile"];
+	m_anim.nbFrame= _json["frameCount"];
+
+	m_anim.frameDivider = { _json["FrameDivider"]["w"], _json["FrameDivider"]["h"] };
+	m_anim.startFrame = { _json["StartFrame"]["w"], _json["StartFrame"]["h"] };
+
+	Initialize();
+}
+
+void ControllerComponent::Initialized()
+{
 }
 
 void ControllerComponent::Inputs(const std::vector<sf::Event>& _events)
@@ -126,12 +139,13 @@ void ControllerComponent::Inputs(const std::vector<sf::Event>& _events)
 	{
 		if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
 		{
-			if (m_stateMachine)
+			StateMachineComponent* stateComponent = m_entity.GetComponent<StateMachineComponent>();
+			if (stateComponent)
 			{
 				if (!m_isAttack)
 				{
 					m_state = ATTACK;
-					m_stateMachine->changeState(ATTACK);
+					stateComponent->changeState(ATTACK);
 					m_isAttack = true;
 				}
 			}
@@ -173,25 +187,39 @@ void ControllerComponent::Update(const float _deltaTime)
 			m_velocity = sf::Vector2f(0.f, 0.f);
 		}
 
-		if (m_stateMachine)
+		StateMachineComponent* stateComponent = m_entity.GetComponent<StateMachineComponent>();
+		if (stateComponent)
 		{
 			unsigned int wanted = still ? IDLE : MOVE;
 
 			if (wanted != m_state)
 			{
 				m_state = State(wanted);
-				m_stateMachine->changeState(wanted);
+				stateComponent->changeState(wanted);
 			}
 		}
-		m_pos += m_velocity * _deltaTime;
+
+		GraphicComponent* gComponent = m_entity.GetComponent<GraphicComponent>();
+		if (gComponent)
+		{
+			sf::Sprite& _sprite = gComponent->GetSprite();
+
+			_sprite.setPosition(_sprite.getPosition() + m_velocity * _deltaTime);
+		}
 	}
 	else
 	{
-		if (m_stateMachine->CanChangeState())
+		StateMachineComponent* stateComponent = m_entity.GetComponent<StateMachineComponent>();
+		if (stateComponent && stateComponent->CanChangeState())
 		{
 			m_isAttack = false;
 		}
 	}
+}
+
+void PatrolComponent::Initialize()
+{
+
 }
 
 void PatrolComponent::Update(const float _deltaTime)
@@ -237,7 +265,13 @@ void PatrolComponent::Update(const float _deltaTime)
 
 	if ((m_velocity.x != 0.f || m_velocity.y != 0.f) && m_state == PATROl)
 	{
-		m_pos += m_velocity * _deltaTime;
+		GraphicComponent* gComponent = m_entity.GetComponent<GraphicComponent>();
+		if (gComponent)
+		{
+			sf::Sprite& _sprite = gComponent->GetSprite();
+
+			_sprite.setPosition(_sprite.getPosition() + m_velocity * _deltaTime);
+		}
 	}
 }
 
@@ -282,4 +316,58 @@ sf::Vector2f PatrolComponent::GetDir(Dir& _dir1, Dir& _dir2)
 	}
 
 	return newDir;
+}
+
+void StateMachineComponent::changeState(unsigned int const _state)
+{
+
+	if (_state < animByState.size())
+	{
+		GraphicComponent::AnimParametter& anim = animByState[_state];
+
+		GraphicComponent* gComponent = m_entity.GetComponent<GraphicComponent>();
+		if (gComponent)
+		{
+			gComponent->SetAnim(anim);
+		}
+		//std::cout << "spam change state" << std::endl;
+	}
+}
+
+bool StateMachineComponent::CanChangeState()
+{
+	GraphicComponent* gComponent = m_entity.GetComponent<GraphicComponent>();
+	if (gComponent)
+	{
+		return gComponent->GetIsFinished();
+	}
+	return false;
+}
+
+const char* Component::S_GetTypeName(Component& _component)
+{
+	return _component.GetName();
+}
+
+Component* CJ::Component::S_Create(const char* _typeName, Entity& _entity)
+{
+	const std::string typeName = _typeName;
+	if (typeName == "GraphicComponent")
+	{
+		return new GraphicComponent(_entity);
+	}
+	else if (typeName == "ControllerComponent")
+	{
+		return new ControllerComponent(_entity);
+	}
+	else if (typeName == "PatrolComponent")
+	{
+		return new PatrolComponent(_entity);
+	}
+	else if (typeName == "StateMachineComponent")
+	{
+		return new StateMachineComponent(_entity);
+	}
+
+	return nullptr;
 }

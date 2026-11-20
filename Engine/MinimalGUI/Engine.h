@@ -5,6 +5,7 @@ namespace CJ
 {
 	class Entity;
 	class Player;
+	class Level;
 
 	class Engine
 	{
@@ -15,9 +16,9 @@ namespace CJ
 		void Update(const float _deltaTime);
 		void Render(sf::RenderTarget& _rt);
 
-		const std::vector<Entity*>& GetEntities() const { return m_entities; }
-
+		const std::vector<Entity*>& GetEntities() const;
+		const Level* GetLevel() const { return m_level; }
 	private:
-		std::vector<Entity*> m_entities;
+		Level* m_level{nullptr};
 	};
 }

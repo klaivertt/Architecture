@@ -5,14 +5,24 @@
 namespace CJ
 {
 	class StateMachineComponent;
+	class Entity;
 
 	class Component
 	{
+	protected:
+		Entity& m_entity;
 	public:
+		Component(Entity& _entity) : m_entity(_entity) {}
 		virtual void Inputs(const std::vector<sf::Event>& _events) {}
 		virtual void Update(const float _deltaTime) {}
 		virtual void Render(sf::RenderTarget& _rt) {}
 		virtual const char* GetName() = 0;
+
+		virtual json Serialize() const { return {}; }
+		virtual void Deserialize(const json& _json) {}
+
+		static const char* S_GetTypeName(Component& _component);
+		static Component* S_Create(const char* _typeName, Entity& _entity);
 	};
 
 
@@ -31,6 +41,11 @@ namespace CJ
 				isLoop = _isLoop;
 			}
 
+			AnimParametter()
+			{
+
+			}
+
 			sf::Vector2i frameDivider = sf::Vector2i(0, 0);
 			sf::Vector2i startFrame = sf::Vector2i(0, 0);
 			unsigned int nbFrame = 0;
@@ -39,9 +54,9 @@ namespace CJ
 			bool isLoop = true;
 		};
 
-		GraphicComponent(const char* _textureFile, sf::Vector2f& _position, const sf::IntRect& _area);
-		GraphicComponent(sf::Vector2f& _position, AnimParametter& _parametter);
-		GraphicComponent(sf::Vector2f& _position);
+		GraphicComponent(Entity& _entity) : Component(_entity) {}
+
+		virtual void Initialize();
 		virtual ~GraphicComponent() = default;
 
 		virtual void Inputs(const std::vector<sf::Event>& _events) override;
@@ -50,6 +65,9 @@ namespace CJ
 
 		void SetAnim(AnimParametter& _anim);
 		void AddAnimDelay(float _delay) { m_animationTimer -= _delay; }
+
+		virtual json Serialize() const;
+		virtual void Deserialize(const json& _json);
 
 		sf::Sprite& GetSprite(void)
 		{
@@ -68,33 +86,27 @@ namespace CJ
 		sf::Texture m_texture;
 		sf::Sprite m_sprite;
 		float m_animationTimer = 0.f;
-		float m_frameTime = 0.f;
+
+		AnimParametter m_anim;
+
 		sf::Vector2i m_frameSize = sf::Vector2i(0, 0);
-		sf::Vector2i m_startFrame = sf::Vector2i(0, 0);
-		unsigned int m_nbFrame = 0;
 		unsigned int m_currentFrame = 0;
-		bool m_isLoop = false;
-		sf::Vector2f& m_pos;
 		bool m_isFinished = true;
 	};
 
 	class ControllerComponent : public Component
 	{
 	public:
-		ControllerComponent(sf::Vector2f& _position): m_pos(_position){}
+		ControllerComponent(Entity& _entity) : Component(_entity) {}
 
+		void Initialized();
+		
 		virtual void Inputs(const std::vector<sf::Event>& _events);
 		virtual void Update(const float _deltaTime);
 		virtual const char* GetName() { return "ControllerComponent"; }
 
-		void AddStateMachine(StateMachineComponent& _state)
-		{
-			m_stateMachine = &_state;
-		}
-
 	private:
 		float m_speed = 50.f;
-		sf::Vector2f& m_pos;
 		sf::Vector2f m_velocity{0.f,0.f};
 
 		enum State
@@ -105,38 +117,32 @@ namespace CJ
 			ALL_STATE
 		};
 		State m_state;
-		StateMachineComponent* m_stateMachine{nullptr};
 		bool m_isAttack = false;
 	};
 
-	class TransformComponent : public Component
-	{
-	public:
-		TransformComponent(sf::Vector2f _startPos = sf::Vector2f(0.f, 0.f));
+	//class TransformComponent : public Component
+	//{
+	//public:
+	//	TransformComponent();
+	//	void Initialize(sf::Vector2f _startPos = sf::Vector2f(0.f, 0.f));
 
-		sf::Vector2f& GetPos() { return m_pos; }
-		void SetPos(const sf::Vector2f& _pos) { m_pos = _pos; }
+	//	sf::Vector2f& GetPos() { return m_pos; }
+	//	void SetPos(const sf::Vector2f& _pos) { m_pos = _pos; }
 
-		virtual const char* GetName() { return "TransformComponent"; }
-	private:
-		sf::Vector2f m_pos{ 0.f,0.f };
-	};
+	//	virtual const char* GetName() { return "TransformComponent"; }
+	//private:
+	//	sf::Vector2f m_pos{ 0.f,0.f };
+	//};
 	
 	class PatrolComponent : public Component
 	{
 	public:
-		PatrolComponent(sf::Vector2f& _pos) : m_pos(_pos) {}
-
+		PatrolComponent(Entity& _entity) : Component(_entity) {}
+		void Initialize();
 		virtual void Update(const float _deltaTime);
 
 		virtual const char* GetName() { return "PatrolComponent"; }
-
-		void AddStateMachine(StateMachineComponent& _state)
-		{
-			m_stateMachine = &_state;
-		}
 	private:
-		sf::Vector2f& m_pos;
 
 		enum Dir
 		{
@@ -172,35 +178,23 @@ namespace CJ
 	class StateMachineComponent : public Component
 	{
 	public:
-		StateMachineComponent(GraphicComponent& _component) : gComponent(_component) {}
+		StateMachineComponent(Entity& _entity) : Component(_entity) {}
 		// Add anim in the right order
 		void AddAnim(GraphicComponent::AnimParametter& _anim)
 		{
 			animByState.push_back(_anim);
 		}
 
-		void changeState(unsigned int const _state)
-		{
-
-			if(_state < animByState.size())
-			{
-				GraphicComponent::AnimParametter& anim = animByState[_state];
-				gComponent.SetAnim(anim);
-				std::cout << "spam change state" << std::endl;
-			}
-		}
+		void changeState(unsigned int const _state);
 
 		
-		bool CanChangeState()
-		{
-			return gComponent.GetIsFinished();
-		}
+		bool CanChangeState();
+
 
 		virtual const char* GetName() { return "StateMachineComponent"; }
 	
 	private:
 		std::vector<GraphicComponent::AnimParametter> animByState;
-		GraphicComponent& gComponent;
 	};
 }
 

@@ -8,13 +8,14 @@ using namespace CJ;
 
 // TODO implement Editor's functions here
 
-Editor::Editor(Engine& _engine, const std::vector<Entity*>& _entities, bool& _enginePause) : m_engine(_engine), m_entities(_entities), m_enginePause(_enginePause)
+Editor::Editor(Engine& _engine, bool& _enginePause) : m_engine(_engine), m_enginePause(_enginePause)
 {
 }
 
-bool Editor::Initialize()
+bool Editor::Initialize(const std::vector<Entity*>& _entities)
 {
 	sf::Font* font = AssetManager::get()->GetFont();
+	m_entities = &_entities;
 
 	if (!font)
 	{
@@ -65,20 +66,14 @@ void Editor::Update(const float _deltaTime, const sf::Vector2i& _mousePos)
 		{
 			sf::Sprite& sprite = gComponent->GetSprite();
 
-			TransformComponent* gTransform = m_currentEntity->GetComponent<TransformComponent>();
-			if(gTransform)
-			{
-				gTransform->SetPos(sf::Vector2f(_mousePos) + m_currentEntityOffset);
-				//std::cout << sf::Vector2f(sf::Vector2f(_mousePos) + m_currentEntityOffset).x << sf::Vector2f(sf::Vector2f(_mousePos) + m_currentEntityOffset).y << std::endl;
-				//std::cout << gTransform->GetPos().x << ":" << gTransform->GetPos().y << std::endl;
-			}
+			sprite.setPosition(sf::Vector2f(_mousePos) + m_currentEntityOffset);
 		}
 	}
 }
 
 void Editor::Render(sf::RenderTarget& _rt)
 {
-	for (Entity* entity : m_entities)
+	for (Entity* entity : *m_entities)
 	{
 		GraphicComponent* gComponent = entity->GetComponent<GraphicComponent>();
 		if (gComponent)
@@ -116,7 +111,7 @@ void Editor::Render(sf::RenderTarget& _rt)
 
 void Editor::GetEntityAtMousePos(sf::Vector2f _pos)
 {
-	for (const Entity* entity : m_entities)
+	for (const Entity* entity : *m_entities)
 	{
 		GraphicComponent* gComponent = entity->GetComponent<GraphicComponent>();
 		if (gComponent)

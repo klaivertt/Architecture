@@ -19,14 +19,14 @@ bool Application::Initialize(const char* _title, const sf::VideoMode& _mode, uns
 	std::srand(static_cast<unsigned int>(std::time(nullptr)));
 	AssetManager::s_create();
 
-	m_editor = std::make_unique<Editor>(m_engine, m_engine.GetEntities(), m_pause);
+	m_editor = std::make_unique<Editor>(m_engine, m_pause);
 
 	if (!m_engine.Initialize())
 	{
 		return false;
 	}
 
-	if (!m_editor->Initialize())
+	if (!m_editor->Initialize(m_engine.GetEntities()))
 	{
 		return false;
 	}
