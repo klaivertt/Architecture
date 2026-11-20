@@ -46,6 +46,32 @@ namespace CJ
 
 			}
 
+			virtual json Serialize() const
+			{
+
+				json cJson;
+
+				cJson["TextureFiles"] = path;
+				cJson["FrameCount"] = nbFrame;
+				cJson["FrameDivider"]["w"] = frameDivider.x;
+				cJson["FrameDivider"]["h"] = frameDivider.y;
+
+
+				cJson["StartFrame"]["w"] = startFrame.x;
+				cJson["StartFrame"]["h"] = startFrame.y;
+
+				return cJson;
+			}
+			virtual void Deserialize(const json& _json)
+			{
+				path = _json["TextureFiles"];
+
+				nbFrame = _json["frameCount"];
+
+				frameDivider = { _json["FrameDivider"]["w"], _json["FrameDivider"]["h"] };
+				startFrame = { _json["StartFrame"]["w"], _json["StartFrame"]["h"] };
+			}
+
 			sf::Vector2i frameDivider = sf::Vector2i(0, 0);
 			sf::Vector2i startFrame = sf::Vector2i(0, 0);
 			unsigned int nbFrame = 0;
@@ -141,6 +167,9 @@ namespace CJ
 		void Initialize();
 		virtual void Update(const float _deltaTime);
 
+		//virtual json Serialize() const;
+		//virtual void Deserialize(const json& _json);
+
 		virtual const char* GetName() { return "PatrolComponent"; }
 	private:
 
@@ -182,19 +211,24 @@ namespace CJ
 		// Add anim in the right order
 		void AddAnim(GraphicComponent::AnimParametter& _anim)
 		{
-			animByState.push_back(_anim);
+			m_animByState.push_back(_anim);
+			m_totalState = m_animByState.size();
 		}
 
 		void changeState(unsigned int const _state);
 
-		
 		bool CanChangeState();
+		
+		virtual json Serialize() const;
+		virtual void Deserialize(const json& _json);
 
 
 		virtual const char* GetName() { return "StateMachineComponent"; }
 	
 	private:
-		std::vector<GraphicComponent::AnimParametter> animByState;
+		std::vector<GraphicComponent::AnimParametter> m_animByState;
+		int m_currentState = 0;
+		int m_totalState = 0;
 	};
 }
 

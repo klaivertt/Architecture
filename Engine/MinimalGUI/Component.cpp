@@ -103,15 +103,7 @@ json GraphicComponent::Serialize() const
 	cJson["position"]["x"] = m_sprite.getPosition().x;
 	cJson["position"]["y"] = m_sprite.getPosition().y;
 
-	cJson["TextureFiles"] = m_anim.path;
-	cJson["FrameCount"] = m_anim.nbFrame;
-	cJson["FrameDivider"]["w"] = m_anim.frameDivider.x;
-	cJson["FrameDivider"]["h"] = m_anim.frameDivider.y;
-
-
-	cJson["StartFrame"]["w"] = m_anim.startFrame.x;
-	cJson["StartFrame"]["h"] = m_anim.startFrame.y;
-
+	cJson += m_anim.Serialize();
 	return cJson;
 }
 
@@ -120,11 +112,7 @@ void GraphicComponent::Deserialize(const json& _json)
 	const sf::Vector2f position = { _json["position"]["x"], _json["position"]["y"] };
 	m_sprite.setPosition(position);
 
-	m_anim.path= _json["spriteSheetFile"];
-	m_anim.nbFrame= _json["frameCount"];
-
-	m_anim.frameDivider = { _json["FrameDivider"]["w"], _json["FrameDivider"]["h"] };
-	m_anim.startFrame = { _json["StartFrame"]["w"], _json["StartFrame"]["h"] };
+	m_anim.Deserialize(_json);
 
 	Initialize();
 }
@@ -275,6 +263,19 @@ void PatrolComponent::Update(const float _deltaTime)
 	}
 }
 
+//json PatrolComponent::Serialize() const
+//{
+//	json cJson;
+//
+//	cJson[]
+//
+//	return cJson;
+//}
+//
+//void PatrolComponent::Deserialize(const json& _json)
+//{
+//}
+
 sf::Vector2f PatrolComponent::GetDir(Dir& _dir1, Dir& _dir2)
 {
 	sf::Vector2f newDir = { 0.f,0.f };
@@ -321,10 +322,10 @@ sf::Vector2f PatrolComponent::GetDir(Dir& _dir1, Dir& _dir2)
 void StateMachineComponent::changeState(unsigned int const _state)
 {
 
-	if (_state < animByState.size())
+	if (_state < m_animByState.size())
 	{
-		GraphicComponent::AnimParametter& anim = animByState[_state];
-
+		GraphicComponent::AnimParametter& anim = m_animByState[_state];
+		m_currentState = _state;
 		GraphicComponent* gComponent = m_entity.GetComponent<GraphicComponent>();
 		if (gComponent)
 		{
@@ -344,12 +345,45 @@ bool StateMachineComponent::CanChangeState()
 	return false;
 }
 
+json StateMachineComponent::Serialize() const
+{
+	json componentJson;
+	componentJson["currentState"] = (int)m_currentState;
+	componentJson["totalState"] = (int)m_totalState;
+
+	json animationArray = json::array();
+	for (const GraphicComponent::AnimParametter& animData : m_animByState)
+	{
+		json animDataJson;
+		animationArray.push_back(animData.Serialize());
+	}
+	componentJson["animationData"] = animationArray;
+	return componentJson;
+}
+
+void StateMachineComponent::Deserialize(const json& _json)
+{
+	m_totalState = _json["totalState"].get<int>();
+
+	const json& animationDataArray = _json["animationData"];
+
+	for (size_t i = 0; i < animationDataArray.size() && i < (size_t)m_totalState; ++i)
+	{
+		const json& animDataJson = animationDataArray[i];
+		GraphicComponent::AnimParametter& animData = m_animByState[i];
+		animData.Deserialize(animDataJson);
+	}
+
+	int currentState = _json["currentState"].get<int>();
+	changeState(currentState);
+}
+
 const char* Component::S_GetTypeName(Component& _component)
 {
 	return _component.GetName();
 }
 
-Component* CJ::Component::S_Create(const char* _typeName, Entity& _entity)
+Component* Component::S_Create(const char* _typeName, Entity& _entity)
 {
 	const std::string typeName = _typeName;
 	if (typeName == "GraphicComponent")
