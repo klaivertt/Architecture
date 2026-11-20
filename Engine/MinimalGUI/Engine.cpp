@@ -6,7 +6,7 @@ using namespace CJ;
 bool Engine::Initialize()
 {
 	m_level = new Level();
-	m_level->Initialize();
+	m_level->LoadFromFile("level_01.json");
 	return true;
 }
 

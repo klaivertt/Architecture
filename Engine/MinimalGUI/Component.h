@@ -66,7 +66,7 @@ namespace CJ
 			{
 				path = _json["TextureFiles"];
 
-				nbFrame = _json["frameCount"];
+				nbFrame = _json["FrameCount"];
 
 				frameDivider = { _json["FrameDivider"]["w"], _json["FrameDivider"]["h"] };
 				startFrame = { _json["StartFrame"]["w"], _json["StartFrame"]["h"] };

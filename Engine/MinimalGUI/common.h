@@ -9,6 +9,7 @@
 #include <vector>
 #include <cstdlib>
 #include <format>
+#include <fstream>
 
 #include "SFML/Window.hpp"
 #include "SFML/Audio.hpp"

@@ -103,7 +103,7 @@ json GraphicComponent::Serialize() const
 	cJson["position"]["x"] = m_sprite.getPosition().x;
 	cJson["position"]["y"] = m_sprite.getPosition().y;
 
-	cJson += m_anim.Serialize();
+	cJson.update(m_anim.Serialize());
 	return cJson;
 }
 
@@ -367,11 +367,13 @@ void StateMachineComponent::Deserialize(const json& _json)
 
 	const json& animationDataArray = _json["animationData"];
 
-	for (size_t i = 0; i < animationDataArray.size() && i < (size_t)m_totalState; ++i)
+	for (const json& animDataJson : animationDataArray)
 	{
-		const json& animDataJson = animationDataArray[i];
-		GraphicComponent::AnimParametter& animData = m_animByState[i];
+		GraphicComponent::AnimParametter animData;
+
 		animData.Deserialize(animDataJson);
+
+		m_animByState.push_back(animData);
 	}
 
 	int currentState = _json["currentState"].get<int>();

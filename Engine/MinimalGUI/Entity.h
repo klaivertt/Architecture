@@ -16,7 +16,8 @@ namespace CJ
 				m_components.push_back(_component);
 			}
 		}
-
+		Component* AddComponent(const char* _typeName);
+		
 		template<typename T>
 		T* GetComponent() const
 		{
@@ -30,6 +31,9 @@ namespace CJ
 
 			return nullptr;
 		}
+
+		json Serialize() const;
+		void Deserialize(const json& _json);
 
 	private:
 		std::vector<Component*> m_components;

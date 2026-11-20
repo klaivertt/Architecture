@@ -1,0 +1,310 @@
+[
+    [
+        {
+            "FrameCount": 8,
+            "FrameDivider": {
+                "h": 1,
+                "w": 8
+            },
+            "StartFrame": {
+                "h": 0,
+                "w": 0
+            },
+            "TextureFiles": "tree_01.png",
+            "position": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "type": "GraphicComponent"
+        }
+    ],
+    [
+        {
+            "FrameCount": 8,
+            "FrameDivider": {
+                "h": 1,
+                "w": 8
+            },
+            "StartFrame": {
+                "h": 0,
+                "w": 0
+            },
+            "TextureFiles": "tree_01.png",
+            "position": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "type": "GraphicComponent"
+        }
+    ],
+    [
+        {
+            "FrameCount": 8,
+            "FrameDivider": {
+               "h": 1,
+                "w": 8
+            },
+            "StartFrame": {
+                "h": 0,
+                "w": 0
+            },
+            "TextureFiles": "tree_01.png",
+            "position": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "type": "GraphicComponent"
+        }
+    ],
+    [
+        {
+            "FrameCount": 8,
+            "FrameDivider": {
+                "h": 1,
+                "w": 8
+            },
+            "StartFrame": {
+                "h": 0,
+                "w": 0
+            },
+            "TextureFiles": "tree_01.png",
+            "position": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "type": "GraphicComponent"
+        }
+    ],
+    [
+        {
+            "FrameCount": 8,
+            "FrameDivider": {
+               "h": 1,
+                "w": 8
+            },
+            "StartFrame": {
+                "h": 0,
+                "w": 0
+            },
+            "TextureFiles": "tree_01.png",
+            "position": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "type": "GraphicComponent"
+        }
+    ],
+    [
+        {
+            "FrameCount": 8,
+            "FrameDivider": {
+               "h": 1,
+                "w": 8
+            },
+            "StartFrame": {
+                "h": 0,
+                "w": 0
+            },
+            "TextureFiles": "tree_01.png",
+            "position": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "type": "GraphicComponent"
+        }
+    ],
+    [
+        {
+            "FrameCount": 8,
+            "FrameDivider": {
+               "h": 1,
+                "w": 8
+            },
+            "StartFrame": {
+                "h": 0,
+                "w": 0
+            },
+            "TextureFiles": "tree_01.png",
+            "position": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "type": "GraphicComponent"
+        }
+    ],
+    [
+        {
+            "FrameCount": 8,
+            "FrameDivider": {
+                "h": 1,
+                "w": 8
+            },
+            "StartFrame": {
+                "h": 0,
+                "w": 0
+            },
+            "TextureFiles": "tree_01.png",
+            "position": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "type": "GraphicComponent"
+        }
+    ],
+    [
+        {
+            "FrameCount": 8,
+            "FrameDivider": {
+                "h": 1,
+                "w": 8
+            },
+            "StartFrame": {
+                "h": 0,
+                "w": 0
+            },
+            "TextureFiles": "tree_01.png",
+            "position": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "type": "GraphicComponent"
+        }
+    ],
+    [
+        {
+            "FrameCount": 8,
+            "FrameDivider": {
+               "h": 1,
+                "w": 8
+            },
+            "StartFrame": {
+                "h": 0,
+                "w": 0
+            },
+            "TextureFiles": "tree_01.png",
+            "position": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "type": "GraphicComponent"
+        }
+    ],
+    [
+        {
+            "FrameCount": 0,
+            "FrameDivider": {
+              "h": 1,
+                "w": 8
+            },
+            "StartFrame": {
+                "h": 0,
+                "w": 0
+            },
+            "TextureFiles": "tree_01.png",
+            "position": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "type": "GraphicComponent"
+        },
+        {
+            "type": "ControllerComponent"
+        },
+        {
+            "animationData": [
+                {
+                    "FrameCount": 8,
+                    "FrameDivider": {
+                        "h": 1,
+                        "w": 8
+                    },
+                    "StartFrame": {
+                        "h": 0,
+                        "w": 0
+                    },
+                    "TextureFiles": "player_idle_01.png"
+                },
+                {
+                    "FrameCount": 6,
+                    "FrameDivider": {
+                        "h": 1,
+                        "w": 6
+                    },
+                    "StartFrame": {
+                        "h": 0,
+                        "w": 0
+                    },
+                    "TextureFiles": "player_run_01.png"
+                },
+                {
+                    "FrameCount": 4,
+                    "FrameDivider": {
+                        "h": 1,
+                        "w": 4
+                    },
+                    "StartFrame": {
+                        "h": 0,
+                        "w": 0
+                    },
+                    "TextureFiles": "player_attack_01.png"
+                }
+            ],
+            "currentState": 0,
+            "totalState": 3,
+            "type": "StateMachineComponent"
+        }
+    ],
+    [
+        {
+            "FrameCount": 0,
+            "FrameDivider": {
+                "h": 0,
+                "w": 0
+            },
+            "StartFrame": {
+                "h": 0,
+                "w": 0
+            },
+            "TextureFiles": "",
+            "position": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "type": "GraphicComponent"
+        },
+        {
+            "animationData": [
+                {
+                    "FrameCount": 12,
+                    "FrameDivider": {
+                        "h": 1,
+                        "w": 12
+                    },
+                    "StartFrame": {
+                        "h": 0,
+                        "w": 0
+                    },
+                    "TextureFiles": "mob_idle_01.png"
+                },
+                {
+                    "FrameCount": 6,
+                    "FrameDivider": {
+                        "h": 1,
+                        "w": 6
+                    },
+                    "StartFrame": {
+                        "h": 0,
+                        "w": 0
+                    },
+                    "TextureFiles": "mob_run_01.png"
+                }
+            ],
+            "currentState": 0,
+            "totalState": 2,
+            "type": "StateMachineComponent"
+        },
+        {
+            "type": "PatrolComponent"
+        }
+    ]
+]
