@@ -55,10 +55,19 @@ bool Engine::Initialize()
 
 	TransformComponent* mobTransform = new TransformComponent(sf::Vector2f(400.f, 500.f));
 
-	param = GraphicComponent::AnimParametter("mob_idle_01.png", sf::Vector2i(12, 1), sf::Vector2i(0, 0), (1.f / 12.f) * 0.8f, 12);
 
-	GraphicComponent* mobGraphic = new GraphicComponent(mobTransform->GetPos(), param);
+	GraphicComponent* mobGraphic = new GraphicComponent(mobTransform->GetPos());
+	StateMachineComponent* mobStateMachine = new StateMachineComponent(*mobGraphic);
+
+	param = GraphicComponent::AnimParametter("mob_idle_01.png", sf::Vector2i(12, 1), sf::Vector2i(0, 0), (1.f / 12.f) * 0.8f, 12);
+	mobStateMachine->AddAnim(param);
+	param = GraphicComponent::AnimParametter("mob_run_01.png", sf::Vector2i(6, 1), sf::Vector2i(0, 0), (1.f / 6.f) * 0.8f, 6);
+	mobStateMachine->AddAnim(param);
+
+
+
 	PatrolComponent* mobPatrol = new PatrolComponent(mobTransform->GetPos());
+	mobPatrol->AddStateMachine(*mobStateMachine);
 
 	mob->AddComponent(mobTransform);
 	mob->AddComponent(mobGraphic);

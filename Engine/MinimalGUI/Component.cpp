@@ -202,7 +202,15 @@ void PatrolComponent::Update(const float _deltaTime)
 	{
 		m_timer += m_changeDir;
 
-		m_state = static_cast<State>((m_state + 1) % ALL_STATE);
+		if (static_cast<State>((m_state + 1) % ALL_STATE) != m_state)
+		{
+			m_state = static_cast<State>((m_state + 1) % ALL_STATE);
+			if (m_stateMachine)
+			{
+				m_stateMachine->changeState(m_state);
+			}
+		}
+
 
 		if (m_state == PATROl)
 		{
