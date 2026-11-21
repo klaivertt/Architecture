@@ -17,7 +17,8 @@ namespace CJ
 		void Render(sf::RenderTarget& _rt);
 
 		const std::vector<Entity*>& GetEntities() const;
-		const Level* GetLevel() const { return m_level; }
+		const Level* ConstGetLevel() const { return m_level; }
+		Level* GetLevel() const { return m_level; }
 	private:
 		Level* m_level{nullptr};
 	};

@@ -83,10 +83,8 @@ void GraphicComponent::SetAnim(AnimParametter& _anim)
 
 	m_frameSize = sf::Vector2i(textureSize.x / divider.x, textureSize.y / divider.y);
 
-	m_anim.startFrame = _anim.startFrame;
-	m_anim.frameTime = _anim.frameTime;
-	m_anim.nbFrame = _anim.nbFrame;
-	m_anim.isLoop = _anim.isLoop;
+	m_anim = _anim;
+
 	m_currentFrame = 0;
 	m_animationTimer = 0.f;
 	m_isFinished = false;
@@ -104,6 +102,7 @@ json GraphicComponent::Serialize() const
 	cJson["position"]["y"] = m_sprite.getPosition().y;
 
 	cJson.update(m_anim.Serialize());
+
 	return cJson;
 }
 

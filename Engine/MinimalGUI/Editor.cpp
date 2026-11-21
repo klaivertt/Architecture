@@ -3,6 +3,7 @@
 #include "Entity.h"
 #include "AssetsManager.h"
 #include "Component.h"
+#include "Level.h"
 
 using namespace CJ;
 
@@ -39,7 +40,13 @@ void Editor::Inputs(const std::vector<sf::Event>& _events)
 {
 	for (const sf::Event& event : _events)
 	{
-		//event.mou
+		const bool isCtrlPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::LControl);
+
+		if (event.key.code == sf::Keyboard::S && isCtrlPressed)
+		{
+			m_engine.GetLevel()->SaveToFile();
+		}
+
 		if (event.type == sf::Event::MouseButtonPressed)
 		{
 			if (event.mouseButton.button == sf::Mouse::Left)

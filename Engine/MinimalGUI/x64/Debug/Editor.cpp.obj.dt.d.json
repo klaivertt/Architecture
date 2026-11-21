@@ -510,7 +510,8 @@
             "c:\\users\\user\\desktop\\cours\\abosio\\architecture\\engine\\minimalgui\\engine.h",
             "c:\\users\\user\\desktop\\cours\\abosio\\architecture\\engine\\minimalgui\\entity.h",
             "c:\\users\\user\\desktop\\cours\\abosio\\architecture\\engine\\minimalgui\\assetsmanager.h",
-            "c:\\users\\user\\desktop\\cours\\abosio\\architecture\\engine\\minimalgui\\component.h"
+            "c:\\users\\user\\desktop\\cours\\abosio\\architecture\\engine\\minimalgui\\component.h",
+            "c:\\users\\user\\desktop\\cours\\abosio\\architecture\\engine\\minimalgui\\level.h"
         ],
         "ImportedModules": [],
         "ImportedHeaderUnits": []

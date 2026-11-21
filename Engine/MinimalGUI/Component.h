@@ -53,6 +53,9 @@ namespace CJ
 
 				cJson["TextureFiles"] = path;
 				cJson["FrameCount"] = nbFrame;
+				cJson["FrameTime"] = frameTime;
+				cJson["IsLoop"] = isLoop;
+
 				cJson["FrameDivider"]["w"] = frameDivider.x;
 				cJson["FrameDivider"]["h"] = frameDivider.y;
 
@@ -67,6 +70,8 @@ namespace CJ
 				path = _json["TextureFiles"];
 
 				nbFrame = _json["FrameCount"];
+				frameTime = _json["FrameTime"];
+				isLoop = _json["IsLoop"];
 
 				frameDivider = { _json["FrameDivider"]["w"], _json["FrameDivider"]["h"] };
 				startFrame = { _json["StartFrame"]["w"], _json["StartFrame"]["h"] };
